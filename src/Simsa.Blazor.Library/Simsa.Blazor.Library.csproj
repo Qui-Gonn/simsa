@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Razor">
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -13,10 +13,13 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="6.0.1" />
+    <PackageReference Include="Syncfusion.Blazor.Buttons" Version="20.3.0.61" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\" />
-  </ItemGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="npm run buildcss" />
+  </Target>
 
 </Project>
