@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+
 using Simsa.Blazor.Client;
 using Simsa.Blazor.Library.Extensions;
 
@@ -12,6 +13,7 @@ builder.Services.AddHttpClient("Simsa.Blazor.ServerAPI", client => client.BaseAd
 // Supply HttpClient instances that include access tokens when making requests to the server project
 builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("Simsa.Blazor.ServerAPI"));
 
+await builder.ReadLicenseJson();
 builder.Services.AddSimsaFrontEndServices(builder.Configuration);
 
 await builder.Build().RunAsync();
