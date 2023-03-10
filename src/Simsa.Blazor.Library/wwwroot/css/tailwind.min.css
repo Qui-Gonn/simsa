@@ -468,6 +468,9 @@ video {
   --tw-backdrop-saturate:  ;
   --tw-backdrop-sepia:  ;
 }
+.table {
+  display: table;
+}
 .h-full {
   height: 100%;
 }

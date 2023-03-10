@@ -17,7 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFiles", "SolutionFi
 		stylecop.ruleset = stylecop.ruleset
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simsa.Blazor.Library", "src\Simsa.Blazor.Library\Simsa.Blazor.Library.csproj", "{79020E8B-BBDE-4B1D-B3E6-B951B7D71795}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simsa.Blazor.Library", "src\Simsa.Blazor.Library\Simsa.Blazor.Library.csproj", "{79020E8B-BBDE-4B1D-B3E6-B951B7D71795}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
