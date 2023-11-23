@@ -18,13 +18,15 @@ public class Person
 
     [DataType(DataType.Date)]
     [Display(Name = "Date of Birth")]
-    public DateOnly DateOfBirth { get; init; }
+    public DateOnly DateOfBirth { get; set; }
 
-    public Gender Gender { get; init; }
+    [Display(Name = "Gender")]
+    public Gender Gender { get; set; }
 
-    [DataType(DataType.Text)]
     [Display(Name = "Name")]
-    public string Name { get; init; }
+    [Required]
+    [StringLength(255, MinimumLength = 3)]
+    public string Name { get; set; }
 }
 
 public enum Gender

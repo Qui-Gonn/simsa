@@ -14,7 +14,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Simsa.Blazor.Library\Simsa.Blazor.Library.csproj" />
-    <ProjectReference Include="..\Simsa.Blazor.Shared\Simsa.Blazor.Shared.csproj" />
   </ItemGroup>
 
 </Project>
