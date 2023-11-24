@@ -1,15 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.4.33205.214
+VisualStudioVersion = 17.9.34310.174
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simsa.Blazor.Server", "src\Simsa.Blazor.Server\Simsa.Blazor.Server.csproj", "{B0DC9075-2923-49D5-9BC1-7B68D17EFE81}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simsa.Blazor.Server", "src\Simsa.Blazor.Server\Simsa.Blazor.Server.csproj", "{9D4B9828-F883-4D3F-879F-37C6886978A7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simsa.Blazor.Client", "src\Simsa.Blazor.Client\Simsa.Blazor.Client.csproj", "{AF87BE03-298E-4CC2-BA06-853B19CE7CDB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simsa.Blazor.Client", "src\Simsa.Blazor.Client\Simsa.Blazor.Client.csproj", "{72E7F050-6CE4-49CF-8058-9F67ACDAC53A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simsa.Blazor.Shared", "src\Simsa.Blazor.Shared\Simsa.Blazor.Shared.csproj", "{D461E73B-5E2E-4871-AF12-0FEBB1A5D7F7}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFiles", "SolutionFiles", "{B01E1C37-9EA0-4517-8659-7088C9690FEA}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{415BF95A-3052-4FBB-B0F4-FFA3966BEC56}"
 	ProjectSection(SolutionItems) = preProject
 		LICENSE = LICENSE
 		README.md = README.md
@@ -17,7 +15,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFiles", "SolutionFi
 		stylecop.ruleset = stylecop.ruleset
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simsa.Blazor.Library", "src\Simsa.Blazor.Library\Simsa.Blazor.Library.csproj", "{79020E8B-BBDE-4B1D-B3E6-B951B7D71795}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simsa.Blazor.Shared", "src\Simsa.Blazor.Shared\Simsa.Blazor.Shared.csproj", "{F9504592-8CBE-4DE3-8FD6-FAC15A51A947}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simsa.Blazor.Library", "src\Simsa.Blazor.Library\Simsa.Blazor.Library.csproj", "{48485983-665C-4881-B860-6D2D7DC53239}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,27 +25,27 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B0DC9075-2923-49D5-9BC1-7B68D17EFE81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B0DC9075-2923-49D5-9BC1-7B68D17EFE81}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B0DC9075-2923-49D5-9BC1-7B68D17EFE81}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B0DC9075-2923-49D5-9BC1-7B68D17EFE81}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AF87BE03-298E-4CC2-BA06-853B19CE7CDB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AF87BE03-298E-4CC2-BA06-853B19CE7CDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AF87BE03-298E-4CC2-BA06-853B19CE7CDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AF87BE03-298E-4CC2-BA06-853B19CE7CDB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D461E73B-5E2E-4871-AF12-0FEBB1A5D7F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D461E73B-5E2E-4871-AF12-0FEBB1A5D7F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D461E73B-5E2E-4871-AF12-0FEBB1A5D7F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D461E73B-5E2E-4871-AF12-0FEBB1A5D7F7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{79020E8B-BBDE-4B1D-B3E6-B951B7D71795}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{79020E8B-BBDE-4B1D-B3E6-B951B7D71795}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{79020E8B-BBDE-4B1D-B3E6-B951B7D71795}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{79020E8B-BBDE-4B1D-B3E6-B951B7D71795}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D4B9828-F883-4D3F-879F-37C6886978A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D4B9828-F883-4D3F-879F-37C6886978A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D4B9828-F883-4D3F-879F-37C6886978A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D4B9828-F883-4D3F-879F-37C6886978A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72E7F050-6CE4-49CF-8058-9F67ACDAC53A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72E7F050-6CE4-49CF-8058-9F67ACDAC53A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72E7F050-6CE4-49CF-8058-9F67ACDAC53A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72E7F050-6CE4-49CF-8058-9F67ACDAC53A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9504592-8CBE-4DE3-8FD6-FAC15A51A947}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9504592-8CBE-4DE3-8FD6-FAC15A51A947}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9504592-8CBE-4DE3-8FD6-FAC15A51A947}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9504592-8CBE-4DE3-8FD6-FAC15A51A947}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48485983-665C-4881-B860-6D2D7DC53239}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48485983-665C-4881-B860-6D2D7DC53239}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48485983-665C-4881-B860-6D2D7DC53239}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48485983-665C-4881-B860-6D2D7DC53239}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {DF08AA50-53AE-4AD1-B8EE-8CDCF869021A}
+		SolutionGuid = {6FEEF302-C206-47A7-B7A3-CC29DBF1F6F2}
 	EndGlobalSection
 EndGlobal

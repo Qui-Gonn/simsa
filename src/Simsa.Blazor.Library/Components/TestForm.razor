@@ -1,0 +1,143 @@
+﻿@using System.ComponentModel.DataAnnotations
+@using System.Linq.Expressions
+@using System.Reflection
+@using Microsoft.AspNetCore.Components.CompilerServices
+@using Simsa.Blazor.Shared.Extensions
+<EditForm Model="@Person">
+    <DataAnnotationsValidator />
+    @CreateForm(Person)
+    <SfButton>Submit</SfButton>
+</EditForm>
+
+@code {
+
+    public RenderFragment CreateForm<TModelType>(TModelType model)
+    {
+        var formFragments = new List<RenderFragment>();
+
+        var propertyInfos = typeof(TModelType).GetProperties();
+        foreach (var propertyInfo in propertyInfos)
+        {
+            var customAttributes = propertyInfo.GetCustomAttributes(false);
+            ////var dataTypeAttribute = customAttributes.OfType<DataTypeAttribute>().FirstOrDefault();
+            var displayAttribute = customAttributes.OfType<DisplayAttribute>().FirstOrDefault();
+            var hasValidationAttributes = customAttributes.Where(a => a is not DataTypeAttribute).OfType<ValidationAttribute>().Any();
+            ////if (dataTypeAttribute is not null)
+            {
+                // Create an expression to set the ValueExpression-attribute.
+                var constant = System.Linq.Expressions.Expression.Constant(model, typeof(TModelType));
+                var exp = System.Linq.Expressions.Expression.Property(constant, propertyInfo.Name);
+                var id = $"{propertyInfo.Name}FormItem".FirstCharToLowerCase()!;
+
+                RenderFragment? labelFragment = default;
+                RenderFragment controlFragment = default!;
+                RenderFragment? validationMessageFragment = default;
+
+                var propValue = propertyInfo.GetValue(model, null);
+                controlFragment = propValue switch
+                {
+                    not null when propValue is string stringValue => CreateTextBox(id, propertyInfo, model, stringValue, displayAttribute?.Name),
+                    ////not null when propValue is string stringValue => CreateTextBox(id, stringValue),
+                    //// not null when propValue is DateOnly dateOnly => CreateDatePicker(id, dateOnly),
+                    not null when propValue is DateOnly dateOnly => CreateDatePicker(id, propertyInfo, model, dateOnly, displayAttribute?.Name),
+                    _ => controlFragment
+                };
+
+                ////switch (dataTypeAttribute.DataType)
+                ////{
+                ////    case DataType.Text:
+                ////    case DataType.EmailAddress:
+                ////    case DataType.PhoneNumber:
+                ////    case DataType.MultilineText:
+                ////        {
+                ////            controlFragment = CreateTextBox(id, propInfoValue?.GetValue(model) as string ?? string.Empty);
+                ////            break;
+                ////        }
+                ////    case DataType.Date:
+                ////        {
+                ////            controlFragment = CreateDatePicker(id, (DateOnly)(propInfoValue?.GetValue(model) ?? DateOnly.MaxValue));
+                ////            break;
+                ////        }
+                ////}
+
+                if (hasValidationAttributes)
+                {
+                    validationMessageFragment = CreateValidation(System.Linq.Expressions.Expression.Lambda<Func<string>>(exp));
+                }
+
+                formFragments.Add(CreateFormGroup(controlFragment, labelFragment, validationMessageFragment));
+            }
+        }
+
+        RenderFragment result = _ =>
+                            {
+                            };
+        formFragments.ForEach(r => result += r);
+        return result;
+    }
+
+    //// private RenderFragment CreateDatePicker(string id, DateOnly value)
+    private RenderFragment CreateDatePicker<TModelType, TDateType>(string id, PropertyInfo propertyInfo, TModelType model, TDateType dateValue, string? label)
+        => @<SfDatePicker ID="@id"
+                          TValue="TDateType"
+                          FloatLabelType="FloatLabelType.Always"
+                          @bind-Value:get="@dateValue"
+                          @bind-Value:set="@(value => propertyInfo.SetValue(model, value))"
+                          Placeholder="@label"
+                          Readonly="true" />;
+
+    private RenderFragment CreateFormGroup(RenderFragment controlFragment, RenderFragment? labelFragment, RenderFragment? validationMessageFragment) => @<div class="form-group">@labelFragment@controlFragment@validationMessageFragment</div>;
+
+    private RenderFragment CreateLabel(string forId, string label) => @<label for="@forId">@($"{label}:")</label>;
+
+    private RenderFragment CreateTextBox<TModelType>(string id, PropertyInfo propertyInfo, TModelType model, string stringValue, string? label)
+        => @<SfTextBox ID="@id"
+                       FloatLabelType="FloatLabelType.Always"
+                       @bind-Value:get="@stringValue"
+                       @bind-Value:set="@(value => propertyInfo.SetValue(model, value))"
+                       Placeholder="@label"
+                       Readonly="false" />;
+    ////private RenderFragment CreateTextBox(string id, string value) => @<SfTextBox ID="@id" FloatLabelType="FloatLabelType.Auto" Value="@value" Readonly="false" />;
+    
+    private RenderFragment CreateValidation(Expression<Func<string>> lambdaExpression) => @<ValidationMessage For="@(lambdaExpression)"></ValidationMessage>;
+
+    private T? GetValue<T>(PropertyInfo propertyInfo, object model, T _)
+        => propertyInfo.GetValue(model) is T value ? value : default;
+    
+}
+
+
+@*<EditForm Model="@Person">
+    <DataAnnotationsValidator/>
+    <div class="form-group">
+        <label for="name">Name:</label>
+        <SfTextBox ID="name"
+                   Value="@Person.Name"
+                   Readonly="false"/>
+        <ValidationMessage For="@(() => Person.Name)"/>
+    </div>
+    <div class="form-group">
+        <label for="dateOfBirth">Geburtsdatum:</label>
+        <SfTextBox ID="dateOfBirth"
+                   Value="@Person.DateOfBirth.ToString("d")"
+                   Readonly="true"/>
+        <ValidationMessage For="@(() => Person.DateOfBirth)"/>
+    </div>
+    <div class="form-group">
+        <label for="name2">Name:</label>
+        <SfInPlaceEditor ID="name2"
+                         Value="@Person.Name"
+                         EnableEditMode="false"
+                         Type="Syncfusion.Blazor.InPlaceEditor.InputType.Text"/>
+        <ValidationMessage For="@(() => Person.Name)"/>
+    </div>
+    <div class="form-group">
+        <label for="dateOfBirth2">Geburtsdatum:</label>
+        <SfInPlaceEditor ID="dateOfBirth2"
+                         Value="@Person.DateOfBirth.ToString("d")"
+                         EnableEditMode="false"
+                         Type="Syncfusion.Blazor.InPlaceEditor.InputType.Date"/>
+        <ValidationMessage For="@(() => Person.DateOfBirth)"/>
+    </div>
+    <SfButton>Submit</SfButton>
+</EditForm>*@
