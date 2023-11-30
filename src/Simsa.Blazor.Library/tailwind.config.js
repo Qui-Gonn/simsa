@@ -1,14 +1,13 @@
+/** @type {import('tailwindcss').Config} */
 module.exports = {
-    content: [
-        './**/*.html',
-        './**/*.razor'
-    ],
-    theme: {
-        extend: {
-            gridTemplateRows: {
-                'aa1': 'auto auto 1fr',
-            },
-        },
-    },
-    plugins: [],
+    content: ["./**/*.{razor,html,cshtml}"],
+  theme: {
+      extend: {
+          gridTemplateRows: {
+              'aa1': 'auto auto 1fr',
+          },
+      },
+  },
+  plugins: [],
 }
+
