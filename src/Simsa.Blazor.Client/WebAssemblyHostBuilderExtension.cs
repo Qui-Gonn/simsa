@@ -2,20 +2,21 @@
 
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
+using Simsa.Blazor.Library.Extensions;
+
 public static class WebAssemblyHostBuilderExtension
 {
-    public static async Task ReadLicenseJson(this WebAssemblyHostBuilder builder)
+    public static async Task ConfigureLicense(this WebAssemblyHostBuilder builder)
     {
         var httpClient = new HttpClient
         {
             BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)
         };
 
-        using var response = await httpClient.GetAsync("license.json");
+        using var response = await httpClient.GetAsync("license");
         if (response.IsSuccessStatusCode)
         {
-            await using var stream = await response.Content.ReadAsStreamAsync();
-            builder.Configuration.AddJsonStream(stream);
+            builder.Configuration[ServiceCollectionExtension.SyncfusionLicenseKey] = await response.Content.ReadAsStringAsync();
         }
     }
 }

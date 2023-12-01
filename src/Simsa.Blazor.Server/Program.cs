@@ -1,5 +1,5 @@
+using Simsa.Blazor.Client;
 using Simsa.Blazor.Library.Extensions;
-using Simsa.Blazor.Server.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,7 +8,7 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
     .AddInteractiveWebAssemblyComponents();
 
-////await builder.ReadLicenseJson();
+builder.Configuration.AddJsonFile("license.json");
 builder.Services.AddSimsaFrontEndServices(builder.Configuration);
 
 var app = builder.Build();
@@ -28,11 +28,15 @@ else
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
+app.UseRouting();
+
 app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode()
     .AddInteractiveWebAssemblyRenderMode()
-    .AddAdditionalAssemblies(typeof(Simsa.Blazor.Client._Imports).Assembly);
+    .AddAdditionalAssemblies(typeof(Simsa.Blazor.Library._Imports).Assembly, typeof(Program).Assembly);
+
+app.MapGet("license", () => builder.Configuration[ServiceCollectionExtension.SyncfusionLicenseKey]);
 
 app.Run();
