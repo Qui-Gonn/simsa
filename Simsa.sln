@@ -1,23 +1,18 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.9.34310.174
+VisualStudioVersion = 17.10.34804.81
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simsa.Blazor.Server", "src\Simsa.Blazor.Server\Simsa.Blazor.Server.csproj", "{9D4B9828-F883-4D3F-879F-37C6886978A7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simsa", "src\Simsa\Simsa.csproj", "{199402A1-0F7C-4F37-9BEF-9CCA1D2F6839}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simsa.Blazor.Client", "src\Simsa.Blazor.Client\Simsa.Blazor.Client.csproj", "{72E7F050-6CE4-49CF-8058-9F67ACDAC53A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simsa.Client", "src\Simsa.Client\Simsa.Client.csproj", "{77695CC0-1DDC-4A04-87DA-05105F9E149D}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{415BF95A-3052-4FBB-B0F4-FFA3966BEC56}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F37655B4-D8D2-423B-8501-707B56E44AC3}"
 	ProjectSection(SolutionItems) = preProject
-		LICENSE = LICENSE
-		README.md = README.md
-		Simsa.sln.DotSettings = Simsa.sln.DotSettings
-		stylecop.ruleset = stylecop.ruleset
+		package-lock.json = package-lock.json
+		package.json = package.json
+		tailwind.config.js = tailwind.config.js
 	EndProjectSection
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simsa.Blazor.Shared", "src\Simsa.Blazor.Shared\Simsa.Blazor.Shared.csproj", "{F9504592-8CBE-4DE3-8FD6-FAC15A51A947}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simsa.Blazor.Library", "src\Simsa.Blazor.Library\Simsa.Blazor.Library.csproj", "{48485983-665C-4881-B860-6D2D7DC53239}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,27 +20,19 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9D4B9828-F883-4D3F-879F-37C6886978A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9D4B9828-F883-4D3F-879F-37C6886978A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9D4B9828-F883-4D3F-879F-37C6886978A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9D4B9828-F883-4D3F-879F-37C6886978A7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{72E7F050-6CE4-49CF-8058-9F67ACDAC53A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{72E7F050-6CE4-49CF-8058-9F67ACDAC53A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{72E7F050-6CE4-49CF-8058-9F67ACDAC53A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{72E7F050-6CE4-49CF-8058-9F67ACDAC53A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F9504592-8CBE-4DE3-8FD6-FAC15A51A947}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F9504592-8CBE-4DE3-8FD6-FAC15A51A947}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F9504592-8CBE-4DE3-8FD6-FAC15A51A947}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F9504592-8CBE-4DE3-8FD6-FAC15A51A947}.Release|Any CPU.Build.0 = Release|Any CPU
-		{48485983-665C-4881-B860-6D2D7DC53239}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{48485983-665C-4881-B860-6D2D7DC53239}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{48485983-665C-4881-B860-6D2D7DC53239}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{48485983-665C-4881-B860-6D2D7DC53239}.Release|Any CPU.Build.0 = Release|Any CPU
+		{199402A1-0F7C-4F37-9BEF-9CCA1D2F6839}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{199402A1-0F7C-4F37-9BEF-9CCA1D2F6839}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{199402A1-0F7C-4F37-9BEF-9CCA1D2F6839}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{199402A1-0F7C-4F37-9BEF-9CCA1D2F6839}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77695CC0-1DDC-4A04-87DA-05105F9E149D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77695CC0-1DDC-4A04-87DA-05105F9E149D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77695CC0-1DDC-4A04-87DA-05105F9E149D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77695CC0-1DDC-4A04-87DA-05105F9E149D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {6FEEF302-C206-47A7-B7A3-CC29DBF1F6F2}
+		SolutionGuid = {681CC034-6440-473B-918E-DCB384974046}
 	EndGlobalSection
 EndGlobal

@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "css:build": "npx tailwindcss -i ./src/Simsa/wwwroot/css/tailwind.css -o ./src/Simsa/wwwroot/css/tailwind.min.css --minify",
+    "css:watch": "npx tailwindcss -i ./src/Simsa/wwwroot/css/tailwind.css -o ./src/Simsa/wwwroot/css/tailwind.min.css --watch"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.4"
+  }
+}
