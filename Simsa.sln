@@ -14,6 +14,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		tailwind.config.js = tailwind.config.js
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simsa.Model", "src\Simsa.Model\Simsa.Model.csproj", "{C2BAF075-8666-41F5-9A44-146C0FA6E166}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,6 +30,10 @@ Global
 		{77695CC0-1DDC-4A04-87DA-05105F9E149D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{77695CC0-1DDC-4A04-87DA-05105F9E149D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{77695CC0-1DDC-4A04-87DA-05105F9E149D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2BAF075-8666-41F5-9A44-146C0FA6E166}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2BAF075-8666-41F5-9A44-146C0FA6E166}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2BAF075-8666-41F5-9A44-146C0FA6E166}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2BAF075-8666-41F5-9A44-146C0FA6E166}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

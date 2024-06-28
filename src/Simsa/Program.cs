@@ -1,4 +1,6 @@
 using Simsa.Components;
+using Simsa.Extensions;
+using Simsa.Features.EventManagement;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,7 +10,8 @@ builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents();
 
 ////builder.Configuration.AddJsonFile("license.json");
-////builder.Services.AddSimsaFrontEndServices(builder.Configuration);
+
+builder.AddSimsaBackendServices();
 
 var app = builder.Build();
 
@@ -35,5 +38,9 @@ app.MapRazorComponents<App>()
     .AddAdditionalAssemblies(typeof(Simsa.Client._Imports).Assembly);
 
 ////app.MapGet("license", () => builder.Configuration[ServiceCollectionExtension.SyncfusionLicenseKey]);
+
+app.MapGroup("/api")
+    .MapGet("/events", async (IEventService eventService) => TypedResults.Ok(await eventService.GetAll()))
+    .WithName("GetEvents");
 
 app.Run();

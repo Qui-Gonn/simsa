@@ -3,7 +3,7 @@
 ////using Syncfusion.Blazor;
 ////using Syncfusion.Licensing;
 
-public static class ServiceCollectionExtension
+public static class ServiceCollectionExtensions
 {
     public const string SyncfusionLicenseKey = "SyncfusionLicense";
 
