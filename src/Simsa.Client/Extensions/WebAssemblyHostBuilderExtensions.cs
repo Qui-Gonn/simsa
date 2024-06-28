@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
 public static class WebAssemblyHostBuilderExtensions
 {
-    public static void AddSimsaFrontendServices(this WebAssemblyHostBuilder builder)
+    public static void AddSimsaClientServices(this WebAssemblyHostBuilder builder)
     {
         builder.Services.AddScoped(
             _ =>

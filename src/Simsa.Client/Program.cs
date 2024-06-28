@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
 using Simsa.Client.Extensions;
+using Simsa.Ui.Library.Extensions;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
 ////await builder.ConfigureLicense();
-
-builder.AddSimsaFrontendServices();
+////builder.Services.AddSimsaFrontEndServices(builder.Configuration);
+builder.Services.AddSimsaUiServices(builder.Configuration);
+builder.AddSimsaClientServices();
 
 await builder.Build().RunAsync();

@@ -1,0 +1,26 @@
+﻿@using Simsa.Ui.Library.Components.Layout
+@inherits LayoutComponentBase
+@layout MainLayout
+@inject NavigationManager NavigationManager
+
+@if (HttpContext is null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    @Body
+}
+
+@code {
+    [CascadingParameter]
+    private HttpContext? HttpContext { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        if (HttpContext is null)
+        {
+            this.NavigationManager.Refresh(forceReload: true);
+        }
+    }
+}

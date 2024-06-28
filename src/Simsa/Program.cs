@@ -1,6 +1,7 @@
-using Simsa.Components;
+using Simsa;
 using Simsa.Extensions;
 using Simsa.Features.EventManagement;
+using Simsa.Ui.Library.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,7 @@ builder.Services.AddRazorComponents()
 
 ////builder.Configuration.AddJsonFile("license.json");
 
+builder.Services.AddSimsaUiServices(builder.Configuration);
 builder.AddSimsaBackendServices();
 
 var app = builder.Build();
@@ -35,7 +37,7 @@ app.UseAntiforgery();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode()
     .AddInteractiveWebAssemblyRenderMode()
-    .AddAdditionalAssemblies(typeof(Simsa.Client._Imports).Assembly);
+    .AddAdditionalAssemblies(typeof(Simsa.Client._Imports).Assembly, typeof(Simsa.Ui.Library._Imports).Assembly);
 
 ////app.MapGet("license", () => builder.Configuration[ServiceCollectionExtension.SyncfusionLicenseKey]);
 
