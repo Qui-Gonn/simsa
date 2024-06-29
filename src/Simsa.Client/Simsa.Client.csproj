@@ -10,9 +10,11 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.6" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Simsa.Interfaces\Simsa.Interfaces.csproj" />
     <ProjectReference Include="..\Simsa.Ui.Library\Simsa.Ui.Library.csproj" />
   </ItemGroup>
 

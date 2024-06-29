@@ -1,10 +1,11 @@
 ﻿namespace Simsa.Features.EventManagement;
 
+using Simsa.Interfaces.Features.EventManagement;
 using Simsa.Model;
 
 public class EventService : IEventService
 {
-    public ValueTask<Event[]> GetAll()
+    public ValueTask<Event[]> GetAllAsync(CancellationToken cancellationToken = default)
     {
         var date1 = DateOnly.FromDateTime(DateTime.UtcNow);
         var date2 = DateOnly.FromDateTime(DateTime.UtcNow - TimeSpan.FromDays(1));

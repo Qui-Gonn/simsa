@@ -1,6 +1,6 @@
 ﻿@inherits LayoutComponentBase
 
-<MudThemeProvider/>
+<MudThemeProvider IsDarkMode="true" />
 <MudDialogProvider/>
 <MudSnackbarProvider/>
 
@@ -9,10 +9,16 @@
         <MudIconButton Color="Color.Inherit"
                        Edge="Edge.Start"
                        Icon="@Icons.Material.Filled.Menu"
-                       OnClick="@((e) => DrawerToggle())" />
-        Taekwon-Do Simsa
+                       OnClick="DrawerToggle" />
+        <MudText Typo="Typo.h5" Class="ml-3">Taekwon-Do Simsa</MudText>
+        <MudSpacer />
+        <MudIconButton Color="Color.Inherit"
+                       Edge="Edge.End"
+                       Icon="@Icons.Material.Filled.MoreVert" />
     </MudAppBar>
-    <MudDrawer @bind-Open="drawerOpen">
+    <MudDrawer ClipMode="DrawerClipMode.Always"
+               Elevation="2"
+               @bind-Open="drawerOpen">
         <NavMenu/>
     </MudDrawer>
     <MudMainContent>

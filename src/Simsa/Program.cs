@@ -1,6 +1,6 @@
 using Simsa;
 using Simsa.Extensions;
-using Simsa.Features.EventManagement;
+using Simsa.Interfaces.Features.EventManagement;
 using Simsa.Ui.Library.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -42,7 +42,7 @@ app.MapRazorComponents<App>()
 ////app.MapGet("license", () => builder.Configuration[ServiceCollectionExtension.SyncfusionLicenseKey]);
 
 app.MapGroup("/api")
-    .MapGet("/events", async (IEventService eventService) => TypedResults.Ok(await eventService.GetAll()))
+    .MapGet("/events", async (IEventService eventService) => TypedResults.Ok(await eventService.GetAllAsync()))
     .WithName("GetEvents");
 
 app.Run();

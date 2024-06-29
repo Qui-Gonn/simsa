@@ -1,6 +1,7 @@
 ﻿namespace Simsa.Extensions;
 
 using Simsa.Features.EventManagement;
+using Simsa.Interfaces.Features.EventManagement;
 
 public static class WebApplicationBuilderExtensions
 {

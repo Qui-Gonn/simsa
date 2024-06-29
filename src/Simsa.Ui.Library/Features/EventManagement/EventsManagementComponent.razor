@@ -1,5 +1,29 @@
-﻿<h3>Manage Events</h3>
+﻿@using MudBlazor.Extensions
+<h3>Manage Events</h3>
 
-<a href="api/events">GetEvents</a>
-
-<MudGrid></MudGrid>
+<MudDataGrid EditMode="DataGridEditMode.Form"
+             Hover="true"
+             Items="AllEvents"
+             ReadOnly="false">
+    <Columns>
+        <PropertyColumn Property="e => e.Source.Name" />
+        <PropertyColumn Format="D"
+                        Property="e => e.StartDate"
+                        Title="Start Date">
+            <EditTemplate>
+                <MudDatePicker @bind-Date="context.Item.StartDate"
+                               Label="Start Date"
+                               Variant="Variant.Outlined"
+                               Required="true" />
+            </EditTemplate>
+        </PropertyColumn>
+        <PropertyColumn Property="e => e.Source.Description" />
+        <TemplateColumn CellClass="d-flex justify-end">
+            <CellTemplate>
+                <MudIconButton Icon="@Icons.Material.Filled.Edit"
+                               OnClick="@context.Actions.StartEditingItemAsync"
+                               Size="@Size.Small"/>
+            </CellTemplate>
+        </TemplateColumn>
+    </Columns>
+</MudDataGrid>
