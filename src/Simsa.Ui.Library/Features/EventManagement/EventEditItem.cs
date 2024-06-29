@@ -4,12 +4,7 @@ using Simsa.Model;
 
 public class EventEditItem
 {
-    public EventEditItem(Event source)
-    {
-        this.Source = source;
-    }
-
-    public Event Source { get; }
+    public required Event Source { get; init; }
 
     public DateTime? StartDate
     {
@@ -17,5 +12,9 @@ public class EventEditItem
         set => this.Source.StartDate = DateOnly.FromDateTime(value ?? default);
     }
 
-    public static EventEditItem FromEvent(Event source) => new (source);
+    public static EventEditItem FromEvent(Event source)
+        => new ()
+        {
+            Source = source
+        };
 }

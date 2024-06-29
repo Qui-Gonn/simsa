@@ -1,12 +1,20 @@
-﻿@using MudBlazor.Extensions
+﻿@using Simsa.Model
 <h3>Manage Events</h3>
 
-<MudDataGrid EditMode="DataGridEditMode.Form"
+<MudDataGrid @ref="GridRef"
+             EditMode="DataGridEditMode.Form"
              Hover="true"
              Items="AllEvents"
              ReadOnly="false">
+    <ToolBarContent>
+        <MudButton OnClick="AddNewEventAsync"
+                   Size="@Size.Small"
+                   StartIcon="@Icons.Material.Filled.Add">
+                   Add
+        </MudButton>
+    </ToolBarContent>
     <Columns>
-        <PropertyColumn Property="e => e.Source.Name" />
+        <PropertyColumn Property="e => e.Source.Name"/>
         <PropertyColumn Format="D"
                         Property="e => e.StartDate"
                         Title="Start Date">
@@ -14,14 +22,18 @@
                 <MudDatePicker @bind-Date="context.Item.StartDate"
                                Label="Start Date"
                                Variant="Variant.Outlined"
-                               Required="true" />
+                               Required="true"/>
             </EditTemplate>
         </PropertyColumn>
-        <PropertyColumn Property="e => e.Source.Description" />
-        <TemplateColumn CellClass="d-flex justify-end">
+        <PropertyColumn Property="e => e.Source.Description"/>
+        <TemplateColumn CellClass="d-flex justify-end"
+                        Title="Actions">
             <CellTemplate>
                 <MudIconButton Icon="@Icons.Material.Filled.Edit"
                                OnClick="@context.Actions.StartEditingItemAsync"
+                               Size="@Size.Small"/>
+                <MudIconButton Icon="@Icons.Material.Filled.Delete"
+                               OnClick="() => DeleteEventAsync(context.Item)"
                                Size="@Size.Small"/>
             </CellTemplate>
         </TemplateColumn>

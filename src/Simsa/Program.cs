@@ -41,8 +41,17 @@ app.MapRazorComponents<App>()
 
 ////app.MapGet("license", () => builder.Configuration[ServiceCollectionExtension.SyncfusionLicenseKey]);
 
-app.MapGroup("/api")
-    .MapGet("/events", async (IEventService eventService) => TypedResults.Ok(await eventService.GetAllAsync()))
+var eventsEndpoint = app.MapGroup("/api")
+    .MapGroup("/events");
+eventsEndpoint.MapGet(string.Empty, async (IEventService eventService) => TypedResults.Ok(await eventService.GetAllAsync()))
     .WithName("GetEvents");
+eventsEndpoint.MapDelete(
+        "{id}",
+        async (Guid id, IEventService eventService) =>
+        {
+            await eventService.DeleteAsync(id);
+            return TypedResults.NoContent();
+        })
+    .WithName("DeleteEventById");
 
 app.Run();
