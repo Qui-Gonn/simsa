@@ -4,7 +4,13 @@ using Simsa.Model;
 
 public interface IEventService
 {
-    ValueTask DeleteAsync(Guid id, CancellationToken cancellationToken = default);
+    Task AddAsync(Event item, CancellationToken cancellationToken = default);
 
-    ValueTask<Event[]> GetAllAsync(CancellationToken cancellationToken = default);
+    Task DeleteAsync(Guid id, CancellationToken cancellationToken = default);
+
+    Task<Event[]> GetAllAsync(CancellationToken cancellationToken = default);
+
+    Task<Event?> GetById(Guid id, CancellationToken cancellationToken = default);
+
+    Task UpdateAsync(Event item, CancellationToken cancellationToken = default);
 }

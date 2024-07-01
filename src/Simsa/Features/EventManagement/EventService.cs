@@ -42,12 +42,32 @@ public class EventService : IEventService
         ];
     }
 
-    public ValueTask DeleteAsync(Guid id, CancellationToken cancellationToken = default)
+    public Task AddAsync(Event item, CancellationToken cancellationToken = default)
     {
-        Events.RemoveAll(e => e.Id == id);
-        return ValueTask.CompletedTask;
+        Events.Add(item);
+        return Task.CompletedTask;
     }
 
-    public ValueTask<Event[]> GetAllAsync(CancellationToken cancellationToken = default)
-        => ValueTask.FromResult(Events.ToArray());
+    public Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        Events.RemoveAll(e => e.Id == id);
+        return Task.CompletedTask;
+    }
+
+    public Task<Event[]> GetAllAsync(CancellationToken cancellationToken = default)
+        => Task.FromResult(Events.ToArray());
+
+    public Task<Event?> GetById(Guid id, CancellationToken cancellationToken = default)
+        => Task.FromResult(Events.Find(e => e.Id == id));
+
+    public Task UpdateAsync(Event item, CancellationToken cancellationToken = default)
+    {
+        var index = Events.FindIndex(e => e.Id == item.Id);
+        if (index > -1 && index < Events.Count())
+        {
+            Events[index] = item;
+        }
+
+        return Task.CompletedTask;
+    }
 }

@@ -2,6 +2,8 @@
 <h3>Manage Events</h3>
 
 <MudDataGrid @ref="GridRef"
+             T="EventEditItem"
+             CommittedItemChanges="CommittedItemChangesAsync"
              EditMode="DataGridEditMode.Form"
              Hover="true"
              Items="AllEvents"

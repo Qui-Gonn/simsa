@@ -9,6 +9,8 @@ using Simsa.Model;
 
 public partial class EventsManagementComponent
 {
+    private EventEditItem? eventToAdd;
+
     [Inject]
     public IEventService EventService { get; set; } = default!;
 
@@ -23,7 +25,21 @@ public partial class EventsManagementComponent
     }
 
     private Task AddNewEventAsync()
-        => this.GridRef.SetEditingItemAsync(EventEditItem.FromEvent(new Event()));
+        => this.GridRef.SetEditingItemAsync(this.NewEvent());
+
+    private async Task CommittedItemChangesAsync(EventEditItem item)
+    {
+        if (item == this.eventToAdd)
+        {
+            await this.EventService.AddAsync(item.Source);
+        }
+        else
+        {
+            await this.EventService.UpdateAsync(item.Source);
+        }
+
+        await this.ReloadDataAsync();
+    }
 
     private async Task DeleteEventAsync(EventEditItem item)
     {
@@ -31,8 +47,12 @@ public partial class EventsManagementComponent
         await this.ReloadDataAsync();
     }
 
+    private EventEditItem NewEvent()
+        => this.eventToAdd = EventEditItem.FromEvent(new Event());
+
     private async Task ReloadDataAsync()
     {
+        this.eventToAdd = null;
         var allEvents = await this.EventService.GetAllAsync();
         this.AllEvents = allEvents.Select(EventEditItem.FromEvent).ToArray();
     }

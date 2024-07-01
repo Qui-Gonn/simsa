@@ -1,6 +1,9 @@
+using Microsoft.AspNetCore.Http.HttpResults;
+
 using Simsa;
 using Simsa.Extensions;
 using Simsa.Interfaces.Features.EventManagement;
+using Simsa.Model;
 using Simsa.Ui.Library.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -43,8 +46,32 @@ app.MapRazorComponents<App>()
 
 var eventsEndpoint = app.MapGroup("/api")
     .MapGroup("/events");
-eventsEndpoint.MapGet(string.Empty, async (IEventService eventService) => TypedResults.Ok(await eventService.GetAllAsync()))
+eventsEndpoint.MapGet(
+        string.Empty,
+        async (IEventService eventService)
+            => TypedResults.Ok(await eventService.GetAllAsync()))
     .WithName("GetEvents");
+eventsEndpoint.MapGet(
+        "{id}",
+        async Task<Results<Ok<Event>, NotFound>> (Guid id, IEventService eventService)
+            => await eventService.GetById(id) is { } itemById ? TypedResults.Ok(itemById) : TypedResults.NotFound())
+    .WithName("GetEventById");
+eventsEndpoint.MapPost(
+        string.Empty,
+        async (Event newItem, IEventService eventService) =>
+        {
+            await eventService.AddAsync(newItem);
+            return TypedResults.Created($"/api/events/{newItem.Id}", newItem);
+        })
+    .WithName("AddEvent");
+eventsEndpoint.MapPut(
+        "{id}",
+        async (Guid id, Event updatedItem, IEventService eventService) =>
+        {
+            await eventService.UpdateAsync(updatedItem);
+            return TypedResults.Ok();
+        })
+    .WithName("UpdateEvent");
 eventsEndpoint.MapDelete(
         "{id}",
         async (Guid id, IEventService eventService) =>
@@ -52,6 +79,6 @@ eventsEndpoint.MapDelete(
             await eventService.DeleteAsync(id);
             return TypedResults.NoContent();
         })
-    .WithName("DeleteEventById");
+    .WithName("DeleteEvent");
 
 app.Run();
