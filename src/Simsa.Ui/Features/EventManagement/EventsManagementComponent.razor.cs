@@ -1,4 +1,4 @@
-﻿namespace Simsa.Ui.Library.Features.EventManagement;
+﻿namespace Simsa.Ui.Features.EventManagement;
 
 using Microsoft.AspNetCore.Components;
 
@@ -6,6 +6,7 @@ using MudBlazor;
 
 using Simsa.Interfaces.Features.EventManagement;
 using Simsa.Model;
+using Simsa.Ui.Components;
 
 public partial class EventsManagementComponent
 {
@@ -15,6 +16,8 @@ public partial class EventsManagementComponent
     public IEventService EventService { get; set; } = default!;
 
     private EventEditItem[] AllEvents { get; set; } = [];
+
+    private EditableWraper<EventEditItem> EditableWrapperRef { get; set; } = default!;
 
     private MudDataGrid<EventEditItem> GridRef { get; set; } = default!;
 

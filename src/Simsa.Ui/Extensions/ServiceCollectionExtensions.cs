@@ -1,4 +1,4 @@
-﻿namespace Simsa.Ui.Library.Extensions;
+﻿namespace Simsa.Ui.Extensions;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

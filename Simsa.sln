@@ -5,7 +5,7 @@ VisualStudioVersion = 17.10.34804.81
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simsa", "src\Simsa\Simsa.csproj", "{199402A1-0F7C-4F37-9BEF-9CCA1D2F6839}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simsa.Client", "src\Simsa.Client\Simsa.Client.csproj", "{77695CC0-1DDC-4A04-87DA-05105F9E149D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simsa.Wasm", "src\Simsa.Wasm\Simsa.Wasm.csproj", "{77695CC0-1DDC-4A04-87DA-05105F9E149D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F37655B4-D8D2-423B-8501-707B56E44AC3}"
 	ProjectSection(SolutionItems) = preProject
@@ -16,9 +16,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simsa.Model", "src\Simsa.Model\Simsa.Model.csproj", "{C2BAF075-8666-41F5-9A44-146C0FA6E166}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simsa.Ui.Library", "src\Simsa.Ui.Library\Simsa.Ui.Library.csproj", "{F1A39300-DA21-4E3E-ADF1-67650D57117B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simsa.Ui", "src\Simsa.Ui\Simsa.Ui.csproj", "{F1A39300-DA21-4E3E-ADF1-67650D57117B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simsa.Interfaces", "src\Simsa.Interfaces\Simsa.Interfaces.csproj", "{3D9F15A8-08D2-4BF6-A470-7857C3B59BEB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simsa.Interfaces", "src\Simsa.Interfaces\Simsa.Interfaces.csproj", "{3D9F15A8-08D2-4BF6-A470-7857C3B59BEB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

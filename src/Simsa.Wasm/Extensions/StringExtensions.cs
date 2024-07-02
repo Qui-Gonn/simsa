@@ -1,4 +1,4 @@
-﻿namespace Simsa.Client.Extensions;
+﻿namespace Simsa.Wasm.Extensions;
 
 public static class StringExtensions
 {

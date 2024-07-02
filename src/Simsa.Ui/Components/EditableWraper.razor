@@ -1,0 +1,13 @@
+﻿@typeparam TItem
+@switch (Mode)
+{
+    case DisplayMode.Overview:
+        @OverviewTemplate
+        break;
+    case DisplayMode.Details:
+        @DetailsTemplate(Item!)
+        break;
+    case DisplayMode.Edit:
+        @EditModeTemplate(Item!)
+        break;
+}

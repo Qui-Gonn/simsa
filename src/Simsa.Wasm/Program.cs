@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
-using Simsa.Client.Extensions;
-using Simsa.Ui.Library.Extensions;
+using Simsa.Wasm.Extensions;
+using Simsa.Ui.Extensions;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 

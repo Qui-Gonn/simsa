@@ -1,4 +1,4 @@
-﻿namespace Simsa.Ui.Library.Components.Layout;
+﻿namespace Simsa.Ui.Components.Layout;
 
 public partial class MainLayout
 {

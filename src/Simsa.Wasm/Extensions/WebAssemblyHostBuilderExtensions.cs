@@ -1,4 +1,4 @@
-﻿namespace Simsa.Client.Extensions;
+﻿namespace Simsa.Wasm.Extensions;
 
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 

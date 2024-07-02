@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Simsa.Client\Simsa.Client.csproj" />
+    <ProjectReference Include="..\Simsa.Wasm\Simsa.Wasm.csproj" />
     <ProjectReference Include="..\Simsa.Interfaces\Simsa.Interfaces.csproj" />
     <ProjectReference Include="..\Simsa.Model\Simsa.Model.csproj" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.6" />

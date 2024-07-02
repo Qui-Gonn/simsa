@@ -4,7 +4,7 @@ using Simsa;
 using Simsa.Extensions;
 using Simsa.Interfaces.Features.EventManagement;
 using Simsa.Model;
-using Simsa.Ui.Library.Extensions;
+using Simsa.Ui.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,7 +40,7 @@ app.UseAntiforgery();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode()
     .AddInteractiveWebAssemblyRenderMode()
-    .AddAdditionalAssemblies(typeof(Simsa.Client._Imports).Assembly, typeof(Simsa.Ui.Library._Imports).Assembly);
+    .AddAdditionalAssemblies(typeof(Simsa.Wasm._Imports).Assembly, typeof(Simsa.Ui._Imports).Assembly);
 
 ////app.MapGet("license", () => builder.Configuration[ServiceCollectionExtension.SyncfusionLicenseKey]);
 

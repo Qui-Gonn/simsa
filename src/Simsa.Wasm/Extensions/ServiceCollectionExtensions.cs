@@ -1,8 +1,8 @@
-﻿namespace Simsa.Client.Extensions;
+﻿namespace Simsa.Wasm.Extensions;
 
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
-using Simsa.Client.Features.EventManagement;
+using Simsa.Wasm.Features.EventManagement;
 using Simsa.Interfaces.Features.EventManagement;
 
 ////using Syncfusion.Blazor;

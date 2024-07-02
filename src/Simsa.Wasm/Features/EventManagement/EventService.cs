@@ -1,4 +1,4 @@
-namespace Simsa.Client.Features.EventManagement;
+namespace Simsa.Wasm.Features.EventManagement;
 
 using System.Net.Http.Json;
 

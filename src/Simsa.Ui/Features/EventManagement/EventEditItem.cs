@@ -1,4 +1,4 @@
-﻿namespace Simsa.Ui.Library.Features.EventManagement;
+﻿namespace Simsa.Ui.Features.EventManagement;
 
 using Simsa.Model;
 

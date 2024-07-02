@@ -1,0 +1,19 @@
+﻿<h6 class="mud-typography mud-typography-h6">Edit Event</h6>
+<MudForm @ref="FormRef" spacing="4">
+    <MudTextField Label="Id"
+                  ReadOnly="true"
+                  @bind-Value="@Event.Source.Id"
+                  Variant="Variant.Outlined" />
+    <MudTextField Label="Name"
+                  @bind-Value="@Event.Source.Name"
+                  Variant="Variant.Outlined" />
+    <MudTextField AutoGrow="true"
+                  Label="Description"
+                  Lines="3"
+                  MaxLines="7"
+                  @bind-Value="@Event.Source.Description"
+                  Variant="Variant.Outlined" />
+    <MudDatePicker Label="Start Date"
+                   @bind-Date="@Event.StartDate"
+                   Variant="Variant.Outlined" />
+</MudForm>

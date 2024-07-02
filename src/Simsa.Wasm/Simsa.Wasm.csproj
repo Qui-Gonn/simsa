@@ -15,7 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Simsa.Interfaces\Simsa.Interfaces.csproj" />
-    <ProjectReference Include="..\Simsa.Ui.Library\Simsa.Ui.Library.csproj" />
+    <ProjectReference Include="..\Simsa.Ui\Simsa.Ui.csproj" />
   </ItemGroup>
 
 </Project>
