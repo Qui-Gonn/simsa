@@ -1,6 +1,6 @@
 ﻿namespace Simsa.Model;
 
-public class Person
+public class Person : IModel, IHasId<Guid>
 {
     public DateOnly DateOfBirth { get; set; }
 

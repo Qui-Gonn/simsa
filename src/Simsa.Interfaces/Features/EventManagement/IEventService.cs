@@ -1,16 +1,8 @@
 namespace Simsa.Interfaces.Features.EventManagement;
 
+using Simsa.Interfaces.Services;
 using Simsa.Model;
 
-public interface IEventService
+public interface IEventService : IGenericItemService<Event>
 {
-    Task AddAsync(Event item, CancellationToken cancellationToken = default);
-
-    Task DeleteAsync(Guid id, CancellationToken cancellationToken = default);
-
-    Task<Event[]> GetAllAsync(CancellationToken cancellationToken = default);
-
-    Task<Event?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
-
-    Task UpdateAsync(Event item, CancellationToken cancellationToken = default);
 }
