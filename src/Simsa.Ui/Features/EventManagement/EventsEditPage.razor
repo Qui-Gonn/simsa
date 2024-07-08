@@ -1,0 +1,11 @@
+﻿@page "/events/add"
+@page "/events/edit/{EventId:guid}"
+
+@if (IsError)
+{
+    @Error
+}
+else
+{
+    <EventDetailsForm Event="Event" OnSave="SaveAsync" />
+}

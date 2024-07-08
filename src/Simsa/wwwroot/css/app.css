@@ -1,3 +1,5 @@
 ﻿@import url('blazor.css');
 /*@import url('/_content/Syncfusion.Blazor/styles/tailwind-dark.css');*/
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap');
+@import url('/_content/MudBlazor/MudBlazor.min.css');
 @import url('tailwind.min.css');

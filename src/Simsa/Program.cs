@@ -1,4 +1,10 @@
-using Simsa.Components;
+using Microsoft.AspNetCore.Http.HttpResults;
+
+using Simsa;
+using Simsa.Extensions;
+using Simsa.Interfaces.Features.EventManagement;
+using Simsa.Model;
+using Simsa.Ui.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,7 +14,9 @@ builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents();
 
 ////builder.Configuration.AddJsonFile("license.json");
-////builder.Services.AddSimsaFrontEndServices(builder.Configuration);
+
+builder.Services.AddSimsaUiServices(builder.Configuration);
+builder.AddSimsaBackendServices();
 
 var app = builder.Build();
 
@@ -32,8 +40,45 @@ app.UseAntiforgery();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode()
     .AddInteractiveWebAssemblyRenderMode()
-    .AddAdditionalAssemblies(typeof(Simsa.Client._Imports).Assembly);
+    .AddAdditionalAssemblies(typeof(Simsa.Wasm._Imports).Assembly, typeof(Simsa.Ui._Imports).Assembly);
 
 ////app.MapGet("license", () => builder.Configuration[ServiceCollectionExtension.SyncfusionLicenseKey]);
+
+var eventsEndpoint = app.MapGroup("/api")
+    .MapGroup("/events");
+eventsEndpoint.MapGet(
+        string.Empty,
+        async (IEventService eventService)
+            => TypedResults.Ok(await eventService.GetAllAsync()))
+    .WithName("GetEvents");
+eventsEndpoint.MapGet(
+        "{id:guid}",
+        async Task<Results<Ok<Event>, NotFound>> (Guid id, IEventService eventService)
+            => await eventService.GetByIdAsync(id) is { } itemById ? TypedResults.Ok(itemById) : TypedResults.NotFound())
+    .WithName("GetEventById");
+eventsEndpoint.MapPost(
+        string.Empty,
+        async (Event newItem, IEventService eventService) =>
+        {
+            await eventService.AddAsync(newItem);
+            return TypedResults.Created($"/api/events/{newItem.Id}", newItem);
+        })
+    .WithName("AddEvent");
+eventsEndpoint.MapPut(
+        "{id:guid}",
+        async (Guid id, Event updatedItem, IEventService eventService) =>
+        {
+            await eventService.UpdateAsync(updatedItem);
+            return TypedResults.Ok();
+        })
+    .WithName("UpdateEvent");
+eventsEndpoint.MapDelete(
+        "{id:guid}",
+        async (Guid id, IEventService eventService) =>
+        {
+            await eventService.DeleteAsync(id);
+            return TypedResults.NoContent();
+        })
+    .WithName("DeleteEvent");
 
 app.Run();
