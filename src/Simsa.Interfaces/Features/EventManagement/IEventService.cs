@@ -10,7 +10,7 @@ public interface IEventService
 
     Task<Event[]> GetAllAsync(CancellationToken cancellationToken = default);
 
-    Task<Event?> GetById(Guid id, CancellationToken cancellationToken = default);
+    Task<Event?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
 
     Task UpdateAsync(Event item, CancellationToken cancellationToken = default);
 }

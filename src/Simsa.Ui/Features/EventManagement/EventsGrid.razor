@@ -1,0 +1,27 @@
+﻿<MudDataGrid T="Event"
+             Hover="true"
+             Items="Events">
+    <ToolBarContent>
+        <MudButton OnClick="() => Add()"
+                   StartIcon="@Icons.Material.Filled.Add">
+            New
+        </MudButton>
+    </ToolBarContent>
+    <Columns>
+        <PropertyColumn Property="e => e.Name" />
+        <PropertyColumn Format="D"
+                        Property="e => e.StartDate"
+                        Title="Start Date" />
+        <PropertyColumn Property="e => e.Description" />
+        <TemplateColumn Title="Actions">
+            <CellTemplate>
+                <MudIconButton Icon="@Icons.Material.Filled.Edit"
+                               OnClick="() => Edit(context.Item)"
+                               Size="@Size.Small" />
+                <MudIconButton Icon="@Icons.Material.Filled.Delete"
+                               OnClick="() => Delete(context.Item)"
+                               Size="@Size.Small" />
+            </CellTemplate>
+        </TemplateColumn>
+    </Columns>
+</MudDataGrid>

@@ -52,9 +52,9 @@ eventsEndpoint.MapGet(
             => TypedResults.Ok(await eventService.GetAllAsync()))
     .WithName("GetEvents");
 eventsEndpoint.MapGet(
-        "{id}",
+        "{id:guid}",
         async Task<Results<Ok<Event>, NotFound>> (Guid id, IEventService eventService)
-            => await eventService.GetById(id) is { } itemById ? TypedResults.Ok(itemById) : TypedResults.NotFound())
+            => await eventService.GetByIdAsync(id) is { } itemById ? TypedResults.Ok(itemById) : TypedResults.NotFound())
     .WithName("GetEventById");
 eventsEndpoint.MapPost(
         string.Empty,
@@ -65,7 +65,7 @@ eventsEndpoint.MapPost(
         })
     .WithName("AddEvent");
 eventsEndpoint.MapPut(
-        "{id}",
+        "{id:guid}",
         async (Guid id, Event updatedItem, IEventService eventService) =>
         {
             await eventService.UpdateAsync(updatedItem);
@@ -73,7 +73,7 @@ eventsEndpoint.MapPut(
         })
     .WithName("UpdateEvent");
 eventsEndpoint.MapDelete(
-        "{id}",
+        "{id:guid}",
         async (Guid id, IEventService eventService) =>
         {
             await eventService.DeleteAsync(id);

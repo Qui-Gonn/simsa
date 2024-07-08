@@ -1,19 +1,35 @@
-﻿<h6 class="mud-typography mud-typography-h6">Edit Event</h6>
-<MudForm @ref="FormRef" spacing="4">
-    <MudTextField Label="Id"
-                  ReadOnly="true"
-                  @bind-Value="@Event.Source.Id"
-                  Variant="Variant.Outlined" />
-    <MudTextField Label="Name"
-                  @bind-Value="@Event.Source.Name"
-                  Variant="Variant.Outlined" />
-    <MudTextField AutoGrow="true"
-                  Label="Description"
-                  Lines="3"
-                  MaxLines="7"
-                  @bind-Value="@Event.Source.Description"
-                  Variant="Variant.Outlined" />
-    <MudDatePicker Label="Start Date"
-                   @bind-Date="@Event.StartDate"
-                   Variant="Variant.Outlined" />
-</MudForm>
+﻿<MudText Typo="Typo.h5" GutterBottom="true">Edit Event</MudText>
+<MudPaper Class="pa-4">
+    <MudForm @ref="FormRef" Spacing="4">
+        <MudTextField Label="Id"
+                      ReadOnly="true"
+                      @bind-Value="@Event.Source.Id"
+                      Variant="Variant" />
+        <MudTextField Label="Name"
+                      Required
+                      @bind-Value="@Event.Source.Name"
+                      Variant="Variant" />
+        <MudTextField AutoGrow="true"
+                      Label="Description"
+                      Lines="3"
+                      MaxLines="7"
+                      @bind-Value="@Event.Source.Description"
+                      Variant="Variant" />
+        <MudDatePicker Label="Start Date"
+                       Required
+                       @bind-Date="@Event.StartDate"
+                       Variant="Variant" />
+        <div class="d-flex flex-row-reverse gap-4">
+            <MudButton Color="Color.Primary"
+                       Disabled="false"
+                       OnClick="SaveAsync"
+                       Variant="Variant">
+                Save
+            </MudButton>
+            <MudButton OnClick="CancelAsync"
+                       Variant="Variant.Text">
+                Cancel
+            </MudButton>
+        </div>
+    </MudForm>
+</MudPaper>

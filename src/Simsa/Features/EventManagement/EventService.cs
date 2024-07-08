@@ -57,7 +57,7 @@ public class EventService : IEventService
     public Task<Event[]> GetAllAsync(CancellationToken cancellationToken = default)
         => Task.FromResult(Events.ToArray());
 
-    public Task<Event?> GetById(Guid id, CancellationToken cancellationToken = default)
+    public Task<Event?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         => Task.FromResult(Events.Find(e => e.Id == id));
 
     public Task UpdateAsync(Event item, CancellationToken cancellationToken = default)

@@ -10,5 +10,5 @@ public class Event
 
     public Participations Participations { get; set; } = Participations.NoParticipations;
 
-    public DateOnly StartDate { get; set; }
+    public DateOnly StartDate { get; set; } = DateOnly.FromDateTime(DateTime.UtcNow);
 }
