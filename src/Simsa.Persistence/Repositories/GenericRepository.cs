@@ -2,7 +2,7 @@
 
 using Microsoft.EntityFrameworkCore;
 
-using Simsa.Interfaces.Repositories;
+using Simsa.Core.Repositories;
 using Simsa.Model;
 using Simsa.Persistence.Mapper;
 

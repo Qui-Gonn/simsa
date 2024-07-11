@@ -1,6 +1,6 @@
 namespace Simsa.Wasm.Features.PersonManagement;
 
-using Simsa.Interfaces.Features.PersonManagement;
+using Simsa.Core.Features.PersonManagement;
 using Simsa.Model;
 
 public class PersonService : GenericItemService<Person>, IPersonService

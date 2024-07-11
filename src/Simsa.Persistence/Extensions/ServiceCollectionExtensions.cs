@@ -3,7 +3,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-using Simsa.Interfaces.Repositories;
+using Simsa.Core.Repositories;
 using Simsa.Model;
 using Simsa.Persistence.Entities;
 using Simsa.Persistence.Mapper;

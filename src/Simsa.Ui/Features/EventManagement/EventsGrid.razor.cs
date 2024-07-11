@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Components;
 
 using MudBlazor;
 
-using Simsa.Interfaces.Features.EventManagement;
+using Simsa.Core.Features.EventManagement;
 using Simsa.Model;
 
 public partial class EventsGrid

@@ -1,4 +1,4 @@
-﻿namespace Simsa.Interfaces.Repositories;
+﻿namespace Simsa.Core.Repositories;
 
 public interface IGenericRepository<TModel>
 {

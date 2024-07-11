@@ -1,6 +1,6 @@
 namespace Simsa.Wasm.Features.EventManagement;
 
-using Simsa.Interfaces.Features.EventManagement;
+using Simsa.Core.Features.EventManagement;
 using Simsa.Model;
 
 public class EventService : GenericItemService<Event>, IEventService

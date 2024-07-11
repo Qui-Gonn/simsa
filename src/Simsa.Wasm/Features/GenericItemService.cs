@@ -1,6 +1,6 @@
 namespace Simsa.Wasm.Features;
 
-using Simsa.Interfaces.Services;
+using Simsa.Core.Services;
 using Simsa.Model;
 
 public class GenericItemService<TItem> : IGenericItemService<TItem>

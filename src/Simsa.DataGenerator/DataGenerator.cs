@@ -4,7 +4,7 @@ using Bogus;
 
 using Microsoft.Extensions.DependencyInjection;
 
-using Simsa.Interfaces.Repositories;
+using Simsa.Core.Repositories;
 using Simsa.Model;
 
 public class DataGenerator(IServiceProvider serviceProvider)

@@ -1,4 +1,4 @@
-﻿namespace Simsa.Interfaces.Services;
+﻿namespace Simsa.Core.Services;
 
 public interface ICrudManager<TItem, in TId>
 {

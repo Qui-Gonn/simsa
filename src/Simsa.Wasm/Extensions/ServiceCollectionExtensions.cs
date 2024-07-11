@@ -2,8 +2,8 @@
 
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
-using Simsa.Interfaces.Features.EventManagement;
-using Simsa.Interfaces.Features.PersonManagement;
+using Simsa.Core.Features.EventManagement;
+using Simsa.Core.Features.PersonManagement;
 using Simsa.Wasm.Features.EventManagement;
 using Simsa.Wasm.Features.PersonManagement;
 

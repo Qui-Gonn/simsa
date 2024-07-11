@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Components;
 
 using MudBlazor;
 
-using Simsa.Interfaces.Features.PersonManagement;
+using Simsa.Core.Features.PersonManagement;
 using Simsa.Model;
 
 public partial class PersonsGrid

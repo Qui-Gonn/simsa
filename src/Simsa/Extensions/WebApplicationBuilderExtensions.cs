@@ -1,9 +1,9 @@
 ﻿namespace Simsa.Extensions;
 
+using Simsa.Core.Features.EventManagement;
+using Simsa.Core.Features.PersonManagement;
 using Simsa.Features.EventManagement;
 using Simsa.Features.PersonManagement;
-using Simsa.Interfaces.Features.EventManagement;
-using Simsa.Interfaces.Features.PersonManagement;
 using Simsa.Persistence;
 using Simsa.Persistence.Extensions;
 using Simsa.Services;

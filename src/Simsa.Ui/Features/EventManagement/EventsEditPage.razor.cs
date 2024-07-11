@@ -2,7 +2,7 @@
 
 using Microsoft.AspNetCore.Components;
 
-using Simsa.Interfaces.Features.EventManagement;
+using Simsa.Core.Features.EventManagement;
 using Simsa.Model;
 
 public partial class EventsEditPage

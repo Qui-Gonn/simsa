@@ -5,7 +5,7 @@ using Microsoft.JSInterop;
 
 using MudBlazor;
 
-using Simsa.Interfaces.Features.EventManagement;
+using Simsa.Core.Features.EventManagement;
 
 public partial class EventDetailsForm
 {

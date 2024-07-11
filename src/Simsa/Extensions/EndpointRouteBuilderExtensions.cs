@@ -2,9 +2,9 @@
 
 using Microsoft.AspNetCore.Http.HttpResults;
 
-using Simsa.Interfaces.Features.EventManagement;
-using Simsa.Interfaces.Features.PersonManagement;
-using Simsa.Interfaces.Services;
+using Simsa.Core.Features.EventManagement;
+using Simsa.Core.Features.PersonManagement;
+using Simsa.Core.Services;
 using Simsa.Model;
 
 public static class RouteGroupBuilderExtensions

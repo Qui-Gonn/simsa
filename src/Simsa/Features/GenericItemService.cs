@@ -1,7 +1,7 @@
 ﻿namespace Simsa.Features;
 
-using Simsa.Interfaces.Repositories;
-using Simsa.Interfaces.Services;
+using Simsa.Core.Repositories;
+using Simsa.Core.Services;
 using Simsa.Model;
 
 public class GenericItemService<TItem> : IGenericItemService<TItem>
