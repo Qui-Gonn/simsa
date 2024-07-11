@@ -36,19 +36,16 @@ public static class RouteGroupBuilderExtensions
             .WithName(definition.GetByIdEndpoint);
         routeGroupBuilder.MapPost(
                 string.Empty,
-                async (TItem newItem, TService service) =>
+                async (TItem itemToAdd, TService service) =>
                 {
-                    await service.AddAsync(newItem);
-                    return TypedResults.Created($"{ApiRoute}/{definition.GroupName}/{newItem.Id}", newItem);
+                    var newItem = await service.AddAsync(itemToAdd);
+                    return TypedResults.Created($"{ApiRoute}/{definition.GroupName}/{newItem?.Id ?? itemToAdd.Id}", newItem);
                 })
             .WithName(definition.AddEndpoint);
         routeGroupBuilder.MapPut(
                 "{id:guid}",
-                async (Guid _, TItem updatedItem, TService service) =>
-                {
-                    await service.UpdateAsync(updatedItem);
-                    return TypedResults.Ok();
-                })
+                async (Guid id, TItem itemToUpdate, TService service)
+                    => TypedResults.Ok(await service.UpdateAsync(itemToUpdate)))
             .WithName(definition.UpdateEnpoint);
         routeGroupBuilder.MapDelete(
                 "{id:guid}",
@@ -63,9 +60,11 @@ public static class RouteGroupBuilderExtensions
     }
 
     private static RouteGroupBuilder MapRouteGroup<TItem, TService>(this RouteGroupBuilder apiRouteGroup, EndpointDefinition definition)
+        where TItem : IHasId<Guid>
+        where TService : IGenericItemService<TItem>
     {
         apiRouteGroup.MapGroup(definition.GroupName)
-            .MapEndpoints<Event, IEventService>(definition);
+            .MapEndpoints<TItem, TService>(definition);
 
         return apiRouteGroup;
     }

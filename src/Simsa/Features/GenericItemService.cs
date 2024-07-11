@@ -1,39 +1,31 @@
 ﻿namespace Simsa.Features;
 
+using Simsa.Interfaces.Repositories;
 using Simsa.Interfaces.Services;
 using Simsa.Model;
 
 public class GenericItemService<TItem> : IGenericItemService<TItem>
     where TItem : IHasId<Guid>
 {
-    protected static List<TItem> Items = [];
-
-    public Task AddAsync(TItem item, CancellationToken cancellationToken = default)
+    public GenericItemService(IGenericRepository<TItem> repository)
     {
-        Items.Add(item);
-        return Task.CompletedTask;
+        this.Repository = repository;
     }
 
-    public Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
-    {
-        Items.RemoveAll(e => e.Id == id);
-        return Task.CompletedTask;
-    }
+    protected IGenericRepository<TItem> Repository { get; }
 
-    public Task<TItem[]> GetAllAsync(CancellationToken cancellationToken = default)
-        => Task.FromResult(Items.ToArray());
+    public ValueTask<TItem?> AddAsync(TItem item, CancellationToken cancellationToken = default)
+        => this.Repository.AddAsync(item, true, cancellationToken);
 
-    public Task<TItem?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
-        => Task.FromResult(Items.Find(e => e.Id == id));
+    public ValueTask DeleteAsync(Guid id, CancellationToken cancellationToken = default)
+        => this.Repository.DeleteAsync(id, true, cancellationToken);
 
-    public Task UpdateAsync(TItem item, CancellationToken cancellationToken = default)
-    {
-        var index = Items.FindIndex(e => e.Id == item.Id);
-        if (index > -1 && index < Items.Count())
-        {
-            Items[index] = item;
-        }
+    public ValueTask<IEnumerable<TItem>> GetAllAsync(CancellationToken cancellationToken = default)
+        => this.Repository.GetAllAsync(cancellationToken);
 
-        return Task.CompletedTask;
-    }
+    public ValueTask<TItem?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+        => this.Repository.GetByIdAsync(id, cancellationToken);
+
+    public ValueTask<TItem?> UpdateAsync(TItem item, CancellationToken cancellationToken = default)
+        => this.Repository.UpdateAsync(item, true, cancellationToken);
 }

@@ -2,13 +2,13 @@
 
 public interface IGenericItemService<TItem>
 {
-    Task AddAsync(TItem item, CancellationToken cancellationToken = default);
+    ValueTask<TItem?> AddAsync(TItem item, CancellationToken cancellationToken = default);
 
-    Task DeleteAsync(Guid id, CancellationToken cancellationToken = default);
+    ValueTask DeleteAsync(Guid id, CancellationToken cancellationToken = default);
 
-    Task<TItem[]> GetAllAsync(CancellationToken cancellationToken = default);
+    ValueTask<IEnumerable<TItem>> GetAllAsync(CancellationToken cancellationToken = default);
 
-    Task<TItem?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
+    ValueTask<TItem?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
 
-    Task UpdateAsync(TItem item, CancellationToken cancellationToken = default);
+    ValueTask<TItem?> UpdateAsync(TItem item, CancellationToken cancellationToken = default);
 }

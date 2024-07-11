@@ -42,4 +42,6 @@ app.MapRazorComponents<App>()
 
 app.AddApiEndpoints();
 
+app.MigrateDatabase(builder.Environment);
+
 app.Run();
