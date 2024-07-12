@@ -8,7 +8,7 @@ public class Person : IModel, IHasId<Guid>
 
     public Gender Gender { get; set; } = Gender.Unknown;
 
-    public Guid Id { get; set; }
+    public Guid Id { get; set; } = Guid.NewGuid();
 
     public string LastName { get; set; } = string.Empty;
 }

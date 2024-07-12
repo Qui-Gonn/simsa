@@ -1,0 +1,11 @@
+﻿@page "/persons/add"
+@page "/persons/edit/{PersonId:guid}"
+
+@if (IsError)
+{
+    @Error
+}
+else
+{
+    <PersonDetailsForm Person="Person" OnSave="SaveAsync" />
+}
