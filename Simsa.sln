@@ -18,7 +18,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simsa.Model", "src\Simsa.Mo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simsa.Ui", "src\Simsa.Ui\Simsa.Ui.csproj", "{F1A39300-DA21-4E3E-ADF1-67650D57117B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simsa.Interfaces", "src\Simsa.Interfaces\Simsa.Interfaces.csproj", "{3D9F15A8-08D2-4BF6-A470-7857C3B59BEB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simsa.Core", "src\Simsa.Core\Simsa.Core.csproj", "{3D9F15A8-08D2-4BF6-A470-7857C3B59BEB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simsa.Persistence", "src\Simsa.Persistence\Simsa.Persistence.csproj", "{3CFC9FAF-0FC2-4522-9378-E3B5ED46F627}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simsa.DataGenerator", "src\Simsa.DataGenerator\Simsa.DataGenerator.csproj", "{2D7B5B23-4C11-4DDF-83F3-AB7C527EB919}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -46,6 +50,14 @@ Global
 		{3D9F15A8-08D2-4BF6-A470-7857C3B59BEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3D9F15A8-08D2-4BF6-A470-7857C3B59BEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3D9F15A8-08D2-4BF6-A470-7857C3B59BEB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3CFC9FAF-0FC2-4522-9378-E3B5ED46F627}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3CFC9FAF-0FC2-4522-9378-E3B5ED46F627}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3CFC9FAF-0FC2-4522-9378-E3B5ED46F627}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3CFC9FAF-0FC2-4522-9378-E3B5ED46F627}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D7B5B23-4C11-4DDF-83F3-AB7C527EB919}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D7B5B23-4C11-4DDF-83F3-AB7C527EB919}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D7B5B23-4C11-4DDF-83F3-AB7C527EB919}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D7B5B23-4C11-4DDF-83F3-AB7C527EB919}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

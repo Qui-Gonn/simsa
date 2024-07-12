@@ -1,0 +1,42 @@
+﻿<MudText Typo="Typo.h5" GutterBottom="true">Edit Person</MudText>
+<MudPaper Class="pa-4">
+    <MudForm @ref="FormRef" Spacing="4">
+        <MudTextField Label="Id"
+                      ReadOnly="true"
+                      @bind-Value="@Person.Source.Id"
+                      Variant="Variant"/>
+        <MudTextField Label="First Name"
+                      Required
+                      @bind-Value="@Person.Source.FirstName"
+                      Variant="Variant"/>
+        <MudTextField Label="Last Name"
+                      Required
+                      @bind-Value="@Person.Source.LastName"
+                      Variant="Variant"/>
+        <MudDatePicker Label="Date of Birth"
+                       Required
+                       @bind-Date="@Person.DateOfBirth"
+                       Variant="Variant"/>
+        <MudSelect Label="Gender"
+                   Required
+                   @bind-Value="@Person.Source.Gender"
+                   Variant="Variant">
+            @foreach (var gender in Enum.GetValues<Gender>())
+            {
+                <MudSelectItem Value="gender"/>
+            }
+        </MudSelect>
+        <div class="d-flex flex-row-reverse gap-4">
+            <MudButton Color="Color.Primary"
+                       Disabled="false"
+                       OnClick="SaveAsync"
+                       Variant="Variant">
+                Save
+            </MudButton>
+            <MudButton OnClick="CancelAsync"
+                       Variant="Variant.Text">
+                Cancel
+            </MudButton>
+        </div>
+    </MudForm>
+</MudPaper>

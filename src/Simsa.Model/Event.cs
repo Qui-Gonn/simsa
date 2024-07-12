@@ -1,6 +1,6 @@
 ﻿namespace Simsa.Model;
 
-public class Event
+public class Event : IModel, IHasId<Guid>
 {
     public string Description { get; set; } = string.Empty;
 

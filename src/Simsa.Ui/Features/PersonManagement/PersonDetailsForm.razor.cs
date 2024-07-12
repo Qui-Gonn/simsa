@@ -1,20 +1,14 @@
-﻿namespace Simsa.Ui.Features.EventManagement;
+﻿namespace Simsa.Ui.Features.PersonManagement;
 
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
 using MudBlazor;
 
-using Simsa.Core.Features.EventManagement;
+using Simsa.Core.Features.PersonManagement;
 
-public partial class EventDetailsForm
+public partial class PersonDetailsForm
 {
-    [Parameter]
-    public required EventEditItem Event { get; set; }
-
-    [Inject]
-    public IEventService EventService { get; set; } = default!;
-
     public MudForm FormRef { get; set; } = default!;
 
     [Inject]
@@ -24,7 +18,13 @@ public partial class EventDetailsForm
     public NavigationManager NavigationManager { get; set; } = default!;
 
     [Parameter]
-    public EventCallback<EventEditItem> OnSave { get; set; }
+    public EventCallback<PersonEditItem> OnSave { get; set; }
+
+    [Parameter]
+    public required PersonEditItem Person { get; set; }
+
+    [Inject]
+    public IPersonService PersonService { get; set; } = default!;
 
     private Variant Variant => Variant.Filled;
 
@@ -37,7 +37,7 @@ public partial class EventDetailsForm
     {
         if (this.OnSave.HasDelegate)
         {
-            await this.OnSave.InvokeAsync(this.Event);
+            await this.OnSave.InvokeAsync(this.Person);
         }
     }
 }

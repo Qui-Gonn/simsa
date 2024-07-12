@@ -1,6 +1,6 @@
 ﻿namespace Simsa.Model;
 
-public class Person
+public class Person : IModel, IHasId<Guid>
 {
     public DateOnly DateOfBirth { get; set; }
 
@@ -8,7 +8,7 @@ public class Person
 
     public Gender Gender { get; set; } = Gender.Unknown;
 
-    public Guid Id { get; set; }
+    public Guid Id { get; set; } = Guid.NewGuid();
 
     public string LastName { get; set; } = string.Empty;
 }

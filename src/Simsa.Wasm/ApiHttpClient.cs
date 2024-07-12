@@ -20,24 +20,25 @@ public class ApiHttpClient
     public async Task<T?> GetAsync<T>(string endpoint, CancellationToken cancellationToken = default)
     {
         var httpResponseMessage = await this.httpClient.GetAsync(endpoint, cancellationToken);
-        if (httpResponseMessage?.IsSuccessStatusCode ?? false)
-        {
-            var result = await httpResponseMessage.Content.ReadFromJsonAsync<T>(cancellationToken);
-            return result;
-        }
-
-        return default;
+        return await ReturnObjectOrDefault<T>(httpResponseMessage, cancellationToken);
     }
 
-    public async Task<bool> PostAsync<T>(string endpoint, T item, CancellationToken cancellationToken = default)
+    public async Task<T?> PostAsync<T>(string endpoint, T item, CancellationToken cancellationToken = default)
     {
         var httpResponseMessage = await this.httpClient.PostAsync(endpoint, JsonContent.Create(item), cancellationToken);
-        return httpResponseMessage?.IsSuccessStatusCode ?? false;
+        return await ReturnObjectOrDefault<T>(httpResponseMessage, cancellationToken);
     }
 
-    public async Task<bool> PutAsync<T>(string endpoint, T item, CancellationToken cancellationToken = default)
+    public async Task<T?> PutAsync<T>(string endpoint, T item, CancellationToken cancellationToken = default)
     {
         var httpResponseMessage = await this.httpClient.PutAsync(endpoint, JsonContent.Create(item), cancellationToken);
-        return httpResponseMessage?.IsSuccessStatusCode ?? false;
+        return await ReturnObjectOrDefault<T>(httpResponseMessage, cancellationToken);
+    }
+
+    private static async Task<T?> ReturnObjectOrDefault<T>(HttpResponseMessage httpResponseMessage, CancellationToken cancellationToken = default)
+    {
+        return httpResponseMessage is { IsSuccessStatusCode: true }
+            ? await httpResponseMessage.Content.ReadFromJsonAsync<T>(cancellationToken: cancellationToken)
+            : default;
     }
 }
