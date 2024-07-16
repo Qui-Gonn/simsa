@@ -5,15 +5,10 @@ using Microsoft.JSInterop;
 
 using MudBlazor;
 
-using Simsa.Core.Features.EventManagement;
-
 public partial class EventDetailsForm
 {
     [Parameter]
     public required EventEditItem Event { get; set; }
-
-    [Inject]
-    public IEventService EventService { get; set; } = default!;
 
     public MudForm FormRef { get; set; } = default!;
 

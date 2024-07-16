@@ -1,5 +1,7 @@
 namespace Simsa.Wasm.Features;
 
+using Microsoft.Extensions.Options;
+
 using Simsa.Core.Services;
 using Simsa.Model;
 
@@ -8,25 +10,24 @@ public class GenericItemService<TItem> : IGenericItemService<TItem>
 {
     private readonly ApiHttpClient apiClient;
 
-    private readonly string endpoint;
+    private readonly EndpointConfig<TItem> endpointConfig;
 
-    private readonly string idEndpoint;
-
-    public GenericItemService(ApiHttpClient apiClient, string endpoint)
+    public GenericItemService(ApiHttpClient apiClient, IOptions<EndpointConfig<TItem>> options)
     {
         this.apiClient = apiClient;
-        this.endpoint = endpoint;
-        this.idEndpoint = $"{this.endpoint}/{{0}}";
+        this.endpointConfig = options.Value;
     }
 
+    private string Endpoint => this.endpointConfig.ApiEndpoint;
+
     public async ValueTask<TItem?> AddAsync(TItem item, CancellationToken cancellationToken = default)
-        => await this.apiClient.PostAsync(this.endpoint, item, cancellationToken);
+        => await this.apiClient.PostAsync(this.Endpoint, item, cancellationToken);
 
     public async ValueTask DeleteAsync(Guid id, CancellationToken cancellationToken = default)
         => await this.apiClient.DeleteAsync(this.BuildIdEndpoint(id), cancellationToken);
 
     public async ValueTask<IEnumerable<TItem>> GetAllAsync(CancellationToken cancellationToken = default)
-        => await this.apiClient.GetAsync<TItem[]>(this.endpoint, cancellationToken) ?? [];
+        => await this.apiClient.GetAsync<TItem[]>(this.Endpoint, cancellationToken) ?? [];
 
     public async ValueTask<TItem?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         => await this.apiClient.GetAsync<TItem>(this.BuildIdEndpoint(id), cancellationToken);
@@ -34,5 +35,5 @@ public class GenericItemService<TItem> : IGenericItemService<TItem>
     public async ValueTask<TItem?> UpdateAsync(TItem item, CancellationToken cancellationToken = default)
         => await this.apiClient.PutAsync(this.BuildIdEndpoint(item.Id), item, cancellationToken);
 
-    private string BuildIdEndpoint(Guid id) => string.Format(this.idEndpoint, id);
+    private string BuildIdEndpoint(Guid id) => string.Format($"{this.Endpoint}/{{0}}", id);
 }

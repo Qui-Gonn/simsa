@@ -2,13 +2,9 @@
 
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
-using Simsa.Core.Features.EventManagement;
-using Simsa.Core.Features.PersonManagement;
-using Simsa.Wasm.Features.EventManagement;
-using Simsa.Wasm.Features.PersonManagement;
-
-////using Syncfusion.Blazor;
-////using Syncfusion.Licensing;
+using Simsa.Core.Services;
+using Simsa.Model;
+using Simsa.Wasm.Features;
 
 public static class ServiceCollectionExtensions
 {
@@ -19,14 +15,23 @@ public static class ServiceCollectionExtensions
         IConfiguration configuration,
         IWebAssemblyHostEnvironment hostEnvironment)
     {
-        services.AddHttpClient<ApiHttpClient>(client => client.BaseAddress = new Uri(hostEnvironment.BaseAddress));
-
         ////SyncfusionLicenseProvider.RegisterLicense(configuration[SyncfusionLicenseKey]);
         ////services.AddSyncfusionBlazor();
 
-        services.AddScoped<IEventService, EventService>();
-        services.AddScoped<IPersonService, PersonService>();
+        services.AddHttpClient<ApiHttpClient>(client => client.BaseAddress = new Uri(hostEnvironment.BaseAddress));
+
+        services.RegisterApiClientService<Event>();
+        services.RegisterApiClientService<Person>();
+
+        services.AddMediatR(config => config.RegisterServicesFromAssemblyContaining<Program>());
 
         return services;
+    }
+
+    private static void RegisterApiClientService<TItem>(this IServiceCollection services)
+        where TItem : IHasId<Guid>
+    {
+        services.AddScoped<IGenericItemService<TItem>, GenericItemService<TItem>>();
+        services.Configure<EndpointConfig<TItem>>(config => config.ApiEndpoint = $"api/{typeof(TItem).Name}");
     }
 }

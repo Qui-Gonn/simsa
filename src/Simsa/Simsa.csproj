@@ -7,11 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MediatR" Version="12.3.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.7" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Simsa.DataGenerator\Simsa.DataGenerator.csproj" />
     <ProjectReference Include="..\Simsa.Persistence\Simsa.Persistence.csproj" />
     <ProjectReference Include="..\Simsa.Wasm\Simsa.Wasm.csproj" />
     <ProjectReference Include="..\Simsa.Core\Simsa.Core.csproj" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.7" />
   </ItemGroup>
 
   <!--<Target Name="Tailwind" BeforeTargets="Build">

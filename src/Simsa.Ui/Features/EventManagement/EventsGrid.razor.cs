@@ -1,10 +1,12 @@
 ﻿namespace Simsa.Ui.Features.EventManagement;
 
+using MediatR;
+
 using Microsoft.AspNetCore.Components;
 
 using MudBlazor;
 
-using Simsa.Core.Features.EventManagement;
+using Simsa.Core.Features;
 using Simsa.Model;
 
 public partial class EventsGrid
@@ -13,7 +15,7 @@ public partial class EventsGrid
     public IDialogService Dialog { get; set; } = default!;
 
     [Inject]
-    public IEventService EventService { get; set; } = default!;
+    public IMediator Mediator { get; set; } = default!;
 
     [Inject]
     public NavigationManager NavigationManager { get; set; } = default!;
@@ -39,7 +41,7 @@ public partial class EventsGrid
 
         if (confirmed ?? false)
         {
-            await this.EventService.DeleteAsync(item.Id);
+            await this.Mediator.Send(new DeleteItemCommand<Event>(item.Id));
             await this.ReloadDataAsync();
         }
     }
@@ -48,5 +50,5 @@ public partial class EventsGrid
         => this.NavigationManager.NavigateTo($"/events/edit/{item.Id}");
 
     private async Task ReloadDataAsync()
-        => this.Events = await this.EventService.GetAllAsync();
+        => this.Events = await this.Mediator.Send(new GetAllItemsQuery<Event>());
 }

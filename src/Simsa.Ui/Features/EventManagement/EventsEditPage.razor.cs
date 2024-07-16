@@ -1,8 +1,10 @@
 ﻿namespace Simsa.Ui.Features.EventManagement;
 
+using MediatR;
+
 using Microsoft.AspNetCore.Components;
 
-using Simsa.Core.Features.EventManagement;
+using Simsa.Core.Features;
 using Simsa.Model;
 
 public partial class EventsEditPage
@@ -11,7 +13,7 @@ public partial class EventsEditPage
     public Guid? EventId { get; set; }
 
     [Inject]
-    public IEventService EventService { get; set; } = default!;
+    public IMediator Mediator { get; set; } = default!;
 
     [Inject]
     public NavigationManager NavigationManager { get; set; } = default!;
@@ -28,7 +30,7 @@ public partial class EventsEditPage
     {
         if (this.EventId is { } eventId)
         {
-            var eventByItd = await this.EventService.GetByIdAsync(eventId);
+            var eventByItd = await this.Mediator.Send(new GetItemByIdQuery<Event>(eventId));
 
             if (eventByItd is not null)
             {
@@ -49,11 +51,11 @@ public partial class EventsEditPage
     {
         if (this.IsNew)
         {
-            await this.EventService.AddAsync(item.Source);
+            await this.Mediator.Send(new AddItemCommand<Event>(item.Source));
         }
         else
         {
-            await this.EventService.UpdateAsync(item.Source);
+            await this.Mediator.Send(new UpdateItemCommand<Event>(item.Source));
         }
 
         this.NavigationManager.NavigateTo("/events");

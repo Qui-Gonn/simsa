@@ -1,10 +1,12 @@
 ﻿namespace Simsa.Ui.Features.PersonManagement;
 
+using MediatR;
+
 using Microsoft.AspNetCore.Components;
 
 using MudBlazor;
 
-using Simsa.Core.Features.PersonManagement;
+using Simsa.Core.Features;
 using Simsa.Model;
 
 public partial class PersonsGrid
@@ -13,10 +15,10 @@ public partial class PersonsGrid
     public IDialogService Dialog { get; set; } = default!;
 
     [Inject]
-    public NavigationManager NavigationManager { get; set; } = default!;
+    public IMediator Mediator { get; set; } = default!;
 
     [Inject]
-    public IPersonService PersonService { get; set; } = default!;
+    public NavigationManager NavigationManager { get; set; } = default!;
 
     private IEnumerable<Person> Persons { get; set; } = [];
 
@@ -39,7 +41,7 @@ public partial class PersonsGrid
 
         if (confirmed ?? false)
         {
-            await this.PersonService.DeleteAsync(item.Id);
+            await this.Mediator.Send(new DeleteItemCommand<Person>(item.Id));
             await this.ReloadDataAsync();
         }
     }
@@ -48,5 +50,5 @@ public partial class PersonsGrid
         => this.NavigationManager.NavigateTo($"/persons/edit/{item.Id}");
 
     private async Task ReloadDataAsync()
-        => this.Persons = await this.PersonService.GetAllAsync();
+        => this.Persons = await this.Mediator.Send(new GetAllItemsQuery<Person>());
 }

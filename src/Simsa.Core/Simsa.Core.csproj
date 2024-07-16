@@ -7,7 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MediatR.Contracts" Version="2.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Simsa.Model\Simsa.Model.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Features\EventManagement\" />
+    <Folder Include="Features\PersonManagement\" />
   </ItemGroup>
 
 </Project>
