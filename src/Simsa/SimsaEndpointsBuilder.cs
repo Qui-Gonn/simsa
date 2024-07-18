@@ -26,11 +26,11 @@ public class SimsaEndpointsBuilder
         return new SimsaEndpointsBuilder(builder);
     }
 
-    public ISimsaEndpointGroup<TItem> MapFullGroup<TItem>()
+    public SimsaEndpointGroup<TItem> MapFullGroup<TItem>()
         where TItem : IHasId<Guid>
         => this.MapFullGroup<TItem>(typeof(TItem).Name);
 
-    public ISimsaEndpointGroup<TItem> MapFullGroup<TItem>(string groupName)
+    public SimsaEndpointGroup<TItem> MapFullGroup<TItem>(string groupName)
         where TItem : IHasId<Guid>
         => this.MapGroup<TItem>()
             .MapGet()
@@ -39,30 +39,16 @@ public class SimsaEndpointsBuilder
             .MapPut()
             .MapDelete();
 
-    public ISimsaEndpointGroup<TItem> MapGroup<TItem>()
+    public SimsaEndpointGroup<TItem> MapGroup<TItem>()
         where TItem : IHasId<Guid>
         => this.MapGroup<TItem>(typeof(TItem).Name);
 
-    public ISimsaEndpointGroup<TItem> MapGroup<TItem>(string groupName)
+    public SimsaEndpointGroup<TItem> MapGroup<TItem>(string groupName)
         where TItem : IHasId<Guid>
-        => new SimsaEndpointGroup<TItem>(this.ApiRouteGroupBuilder, groupName);
+        => new (this.ApiRouteGroupBuilder, groupName);
 }
 
-public interface ISimsaEndpointGroup<TItem>
-    where TItem : IHasId<Guid>
-{
-    ISimsaEndpointGroup<TItem> MapDelete();
-
-    ISimsaEndpointGroup<TItem> MapGet();
-
-    ISimsaEndpointGroup<TItem> MapGetById();
-
-    ISimsaEndpointGroup<TItem> MapPost();
-
-    ISimsaEndpointGroup<TItem> MapPut();
-}
-
-file class SimsaEndpointGroup<TItem> : ISimsaEndpointGroup<TItem>
+public class SimsaEndpointGroup<TItem>
     where TItem : IHasId<Guid>
 {
     private readonly string groupName;
@@ -75,59 +61,54 @@ file class SimsaEndpointGroup<TItem> : ISimsaEndpointGroup<TItem>
 
     private RouteGroupBuilder RouteGroupBuilder { get; }
 
-    public ISimsaEndpointGroup<TItem> MapDelete()
+    public SimsaEndpointGroup<TItem> MapDelete()
     {
-        this.RouteGroupBuilder.MapDelete(
-                "{id:guid}",
-                async (Guid id, IMediator mediator) =>
-                {
-                    await mediator.Send(new DeleteItemCommand<TItem>(id));
-                    return TypedResults.NoContent();
-                })
-            .WithName($"Delete{this.groupName}");
+        this.RouteGroupBuilder.MapDelete("/{id:guid}", Delete).WithName($"Delete{this.groupName}");
         return this;
     }
 
-    public ISimsaEndpointGroup<TItem> MapGet()
+    public SimsaEndpointGroup<TItem> MapGet()
     {
-        this.RouteGroupBuilder.MapGet(
-                string.Empty,
-                async (IMediator mediator)
-                    => TypedResults.Ok(await mediator.Send(new GetAllItemsQuery<TItem>())))
-            .WithName($"Get{this.groupName}");
+        this.RouteGroupBuilder.MapGet("/", Get).WithName($"Get{this.groupName}");
         return this;
     }
 
-    public ISimsaEndpointGroup<TItem> MapGetById()
+    public SimsaEndpointGroup<TItem> MapGetById()
     {
-        this.RouteGroupBuilder.MapGet(
-                "{id:guid}",
-                async Task<Results<Ok<TItem>, NotFound>> (Guid id, IMediator mediator)
-                    => await mediator.Send(new GetItemByIdQuery<TItem>(id)) is { } itemById ? TypedResults.Ok(itemById) : TypedResults.NotFound())
-            .WithName($"Get{this.groupName}ById");
+        this.RouteGroupBuilder.MapGet("/{id:guid}", GetById).WithName($"Get{this.groupName}ById");
         return this;
     }
 
-    public ISimsaEndpointGroup<TItem> MapPost()
+    public SimsaEndpointGroup<TItem> MapPost()
     {
-        this.RouteGroupBuilder.MapPost(
-                string.Empty,
-                async (TItem itemToAdd, IMediator mediator) =>
-                {
-                    var newItem = await mediator.Send(new AddItemCommand<TItem>(itemToAdd));
-                    return TypedResults.Created($"{SimsaEndpointsBuilder.ApiRoute}/{this.groupName}/{newItem?.Id ?? itemToAdd.Id}", newItem);
-                })
-            .WithName($"Add{this.groupName}");
+        this.RouteGroupBuilder.MapPost("/", this.Post).WithName($"Add{this.groupName}");
         return this;
     }
 
-    public ISimsaEndpointGroup<TItem> MapPut()
+    public SimsaEndpointGroup<TItem> MapPut()
     {
-        this.RouteGroupBuilder.MapPut(
-                "{id:guid}",
-                async (Guid id, TItem itemToUpdate, IMediator mediator)
-                    => TypedResults.Ok(await mediator.Send(new UpdateItemCommand<TItem>(itemToUpdate))))
-            .WithName($"Update{this.groupName}");
+        this.RouteGroupBuilder.MapPut("/{id:guid}", Put).WithName($"Update{this.groupName}");
         return this;
+    }
+
+    private static async Task<NoContent> Delete(Guid id, IMediator mediator)
+    {
+        await mediator.Send(new DeleteItemCommand<TItem>(id));
+        return TypedResults.NoContent();
+    }
+
+    private static async Task<Ok<IEnumerable<TItem>>> Get(IMediator mediator)
+        => TypedResults.Ok(await mediator.Send(new GetAllItemsQuery<TItem>()));
+
+    private static async Task<Results<Ok<TItem>, NotFound>> GetById(Guid id, IMediator mediator)
+        => await mediator.Send(new GetItemByIdQuery<TItem>(id)) is { } itemById ? TypedResults.Ok(itemById) : TypedResults.NotFound();
+
+    private static async Task<Ok<TItem>> Put(Guid id, TItem itemToUpdate, IMediator mediator)
+        => TypedResults.Ok(await mediator.Send(new UpdateItemCommand<TItem>(itemToUpdate)));
+
+    private async Task<Created<TItem>> Post(TItem itemToAdd, IMediator mediator)
+    {
+        var newItem = await mediator.Send(new AddItemCommand<TItem>(itemToAdd));
+        return TypedResults.Created($"{SimsaEndpointsBuilder.ApiRoute}/{this.groupName}/{newItem?.Id ?? itemToAdd.Id}", newItem);
     }
 }
