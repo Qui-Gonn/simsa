@@ -3,12 +3,12 @@
 using Simsa.Core.Repositories;
 using Simsa.Model;
 
-public class GetAllEventsHandler(IEventRepository repository) : GetAllItemsHandler<Event>(repository);
+internal class GetAllEventsHandler(IEventRepository repository) : GetAllItemsHandler<Event>(repository);
 
-public class GetEventByIdHandler(IEventRepository repository) : GetItemByIdHandler<Event>(repository);
+internal class GetEventByIdHandler(IEventRepository repository) : GetItemByIdHandler<Event>(repository);
 
-public class AddEventHandler(IEventRepository repository) : AddItemHandler<Event>(repository);
+internal class AddEventHandler(IEventRepository repository) : AddItemHandler<Event>(repository);
 
-public class UpdateEventHandler(IEventRepository repository) : UpdateItemHandler<Event>(repository);
+internal class UpdateEventHandler(IEventRepository repository) : UpdateItemHandler<Event>(repository);
 
-public class DeleteEventHandler(IEventRepository repository) : DeleteItemHandler<Event>(repository);
+internal class DeleteEventHandler(IEventRepository repository) : DeleteItemHandler<Event>(repository);

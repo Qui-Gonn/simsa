@@ -3,12 +3,12 @@
 using Simsa.Core.Repositories;
 using Simsa.Model;
 
-public class GetAllPersonsHandler(IPersonRepository repository) : GetAllItemsHandler<Person>(repository);
+internal class GetAllPersonsHandler(IPersonRepository repository) : GetAllItemsHandler<Person>(repository);
 
-public class GetPersonByIdHandler(IPersonRepository repository) : GetItemByIdHandler<Person>(repository);
+internal class GetPersonByIdHandler(IPersonRepository repository) : GetItemByIdHandler<Person>(repository);
 
-public class AddPersonHandler(IPersonRepository repository) : AddItemHandler<Person>(repository);
+internal class AddPersonHandler(IPersonRepository repository) : AddItemHandler<Person>(repository);
 
-public class UpdatePersonHandler(IPersonRepository repository) : UpdateItemHandler<Person>(repository);
+internal class UpdatePersonHandler(IPersonRepository repository) : UpdateItemHandler<Person>(repository);
 
-public class DeletePersonHandler(IPersonRepository repository) : DeleteItemHandler<Person>(repository);
+internal class DeletePersonHandler(IPersonRepository repository) : DeleteItemHandler<Person>(repository);
