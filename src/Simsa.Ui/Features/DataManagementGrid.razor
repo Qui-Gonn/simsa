@@ -1,6 +1,8 @@
-﻿<MudDataGrid T="Event"
+﻿@typeparam TItem
+
+<MudDataGrid T="TItem"
              Hover="true"
-             Items="Events">
+             Items="Items">
     <ToolBarContent>
         <MudButton OnClick="() => Add()"
                    StartIcon="@Icons.Material.Filled.Add">
@@ -8,19 +10,15 @@
         </MudButton>
     </ToolBarContent>
     <Columns>
-        <PropertyColumn Property="e => e.Name" />
-        <PropertyColumn Format="D"
-                        Property="e => e.StartDate"
-                        Title="Start Date" />
-        <PropertyColumn Property="e => e.Description" />
+        @Columns
         <TemplateColumn Title="Actions">
             <CellTemplate>
                 <MudIconButton Icon="@Icons.Material.Filled.Edit"
                                OnClick="() => Edit(context.Item)"
-                               Size="@Size.Small" />
+                               Size="@Size.Small"/>
                 <MudIconButton Icon="@Icons.Material.Filled.Delete"
                                OnClick="() => Delete(context.Item)"
-                               Size="@Size.Small" />
+                               Size="@Size.Small"/>
             </CellTemplate>
         </TemplateColumn>
     </Columns>

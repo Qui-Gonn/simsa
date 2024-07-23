@@ -1,4 +1,25 @@
 ﻿@page "/persons"
 
 <MudText Typo="Typo.h5" GutterBottom="true">Manage Persons</MudText>
-<PersonsGrid />
+<DataManagementGrid TItem="Person"
+                    ItemTextExpression="@(p => $"{p.LastName}, {p.FirstName}")"
+                    PageRoute="/persons">
+    <Columns>
+        <PropertyColumn T="Person"
+                        TProperty="string"
+                        Property="p => p.FirstName"
+                        Title="First Name" />
+        <PropertyColumn T="Person"
+                        TProperty="string"
+                        Property="p => p.LastName"
+                        Title="Last Name" />
+        <PropertyColumn T="Person"
+                        TProperty="DateOnly"
+                        Format="D"
+                        Property="p => p.DateOfBirth"
+                        Title="Date of Birth" />
+        <PropertyColumn T="Person"
+                        TProperty="Gender"
+                        Property="p => p.Gender" />
+    </Columns>
+</DataManagementGrid>
