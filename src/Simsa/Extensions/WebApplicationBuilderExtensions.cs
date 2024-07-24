@@ -1,9 +1,5 @@
 ﻿namespace Simsa.Extensions;
 
-using Simsa.Core.Features.EventManagement;
-using Simsa.Core.Features.PersonManagement;
-using Simsa.Features.EventManagement;
-using Simsa.Features.PersonManagement;
 using Simsa.Persistence;
 using Simsa.Persistence.Extensions;
 using Simsa.Services;
@@ -12,8 +8,7 @@ public static class WebApplicationBuilderExtensions
 {
     public static void AddSimsaBackendServices(this WebApplicationBuilder builder)
     {
-        builder.Services.AddScoped<IEventService, EventService>();
-        builder.Services.AddScoped<IPersonService, PersonService>();
+        builder.Services.AddMediatR(config => config.RegisterServicesFromAssemblyContaining<Program>());
 
         var connectionString = builder.Configuration.GetConnectionString("SimsaDb") ?? string.Empty;
         builder.Services.AddSimsaPersistenceServices(connectionString);

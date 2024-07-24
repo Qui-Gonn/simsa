@@ -1,4 +1,20 @@
 ﻿@page "/events"
 
 <MudText Typo="Typo.h5" GutterBottom="true">Manage Events</MudText>
-<EventsGrid />
+<DataManagementGrid TItem="Event"
+                    ItemTextExpression="e => e.Name"
+                    PageRoute="/events">
+    <Columns>
+        <PropertyColumn T="Event"
+                        TProperty="string"
+                        Property="e => e.Name" />
+        <PropertyColumn T="Event"
+                        TProperty="DateOnly"
+                        Format="D"
+                        Property="e => e.StartDate"
+                        Title="Start Date" />
+        <PropertyColumn T="Event"
+                        TProperty="string"
+                        Property="e => e.Description" />
+    </Columns>
+</DataManagementGrid>

@@ -5,8 +5,6 @@ using Microsoft.JSInterop;
 
 using MudBlazor;
 
-using Simsa.Core.Features.PersonManagement;
-
 public partial class PersonDetailsForm
 {
     public MudForm FormRef { get; set; } = default!;
@@ -22,9 +20,6 @@ public partial class PersonDetailsForm
 
     [Parameter]
     public required PersonEditItem Person { get; set; }
-
-    [Inject]
-    public IPersonService PersonService { get; set; } = default!;
 
     private Variant Variant => Variant.Filled;
 

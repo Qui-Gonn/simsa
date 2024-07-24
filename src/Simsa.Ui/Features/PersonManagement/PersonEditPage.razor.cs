@@ -1,20 +1,22 @@
 ﻿namespace Simsa.Ui.Features.PersonManagement;
 
+using MediatR;
+
 using Microsoft.AspNetCore.Components;
 
-using Simsa.Core.Features.PersonManagement;
+using Simsa.Core.Features;
 using Simsa.Model;
 
 public partial class PersonEditPage
 {
     [Inject]
+    public IMediator Mediator { get; set; } = default!;
+
+    [Inject]
     public NavigationManager NavigationManager { get; set; } = default!;
 
     [Parameter]
     public Guid? PersonId { get; set; }
-
-    [Inject]
-    public IPersonService PersonService { get; set; } = default!;
 
     private string Error { get; set; } = string.Empty;
 
@@ -28,7 +30,7 @@ public partial class PersonEditPage
     {
         if (this.PersonId is { } personId)
         {
-            var personByItd = await this.PersonService.GetByIdAsync(personId);
+            var personByItd = await this.Mediator.Send(new GetItemByIdQuery<Person>(personId));
 
             if (personByItd is not null)
             {
@@ -49,11 +51,11 @@ public partial class PersonEditPage
     {
         if (this.IsNew)
         {
-            await this.PersonService.AddAsync(item.Source);
+            await this.Mediator.Send(new AddItemCommand<Person>(item.Source));
         }
         else
         {
-            await this.PersonService.UpdateAsync(item.Source);
+            await this.Mediator.Send(new UpdateItemCommand<Person>(item.Source));
         }
 
         this.NavigationManager.NavigateTo("/persons");
