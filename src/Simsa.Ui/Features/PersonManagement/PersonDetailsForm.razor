@@ -3,15 +3,15 @@
     <MudForm @ref="FormRef" Spacing="4">
         <MudTextField Label="Id"
                       ReadOnly="true"
-                      @bind-Value="@Person.Source.Id"
+                      Value="@Person.Id"
                       Variant="Variant"/>
         <MudTextField Label="First Name"
                       Required
-                      @bind-Value="@Person.Source.FirstName"
+                      @bind-Value="@Person.FirstName"
                       Variant="Variant"/>
         <MudTextField Label="Last Name"
                       Required
-                      @bind-Value="@Person.Source.LastName"
+                      @bind-Value="@Person.LastName"
                       Variant="Variant"/>
         <MudDatePicker Label="Date of Birth"
                        Required
@@ -19,7 +19,7 @@
                        Variant="Variant"/>
         <MudSelect Label="Gender"
                    Required
-                   @bind-Value="@Person.Source.Gender"
+                   @bind-Value="@Person.Gender"
                    Variant="Variant">
             @foreach (var gender in Enum.GetValues<Gender>())
             {

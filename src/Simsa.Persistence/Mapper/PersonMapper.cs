@@ -9,20 +9,19 @@ internal class PersonMapper : IMapper<PersonEntity, Person>
         => this.UpdateEntity(new PersonEntity { Id = model.Id }, model);
 
     public Person ToModel(PersonEntity entity)
-        => new()
+        => new ()
         {
             Id = entity.Id,
-            DateOfBirth = entity.DateOfBirth,
-            FirstName = entity.FirstName,
+            DateOfBirth = BirthDate.FromDateOnly(entity.DateOfBirth),
             Gender = entity.Gender,
-            LastName = entity.LastName
+            Name = new PersonName(entity.FirstName, entity.LastName)
         };
 
     public PersonEntity UpdateEntity(PersonEntity entity, Person model)
     {
-        entity.DateOfBirth = model.DateOfBirth;
-        entity.FirstName = model.FirstName;
-        entity.LastName = model.LastName;
+        entity.DateOfBirth = model.DateOfBirth.Date;
+        entity.FirstName = model.Name.FirstName;
+        entity.LastName = model.Name.LastName;
         entity.Gender = model.Gender;
         return entity;
     }

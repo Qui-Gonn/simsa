@@ -2,13 +2,11 @@
 
 public class Person : IModel, IHasId<Guid>
 {
-    public DateOnly DateOfBirth { get; set; }
-
-    public string FirstName { get; set; } = string.Empty;
+    public BirthDate DateOfBirth { get; set; } = BirthDate.Empty;
 
     public Gender Gender { get; set; } = Gender.Unknown;
 
     public Guid Id { get; set; } = Guid.NewGuid();
 
-    public string LastName { get; set; } = string.Empty;
+    public PersonName Name { get; set; } = new (string.Empty, string.Empty);
 }

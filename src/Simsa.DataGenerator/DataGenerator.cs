@@ -26,9 +26,8 @@ public class DataGenerator(IServiceProvider serviceProvider)
     private readonly Faker<Model.Person> persons = new Faker<Model.Person>()
         .StrictMode(true)
         .RuleFor(i => i.Id, Guid.NewGuid)
-        .RuleFor(i => i.FirstName, f => f.Person.FirstName)
-        .RuleFor(i => i.LastName, f => f.Person.LastName)
-        .RuleFor(i => i.DateOfBirth, f => DateOnly.FromDateTime(f.Person.DateOfBirth))
+        .RuleFor(i => i.Name, f => new PersonName(f.Person.FirstName, f.Person.LastName))
+        .RuleFor(i => i.DateOfBirth, f => BirthDate.FromDateTime(f.Person.DateOfBirth))
         .RuleFor(i => i.Gender, f => f.PickRandom<Gender>());
 
     public async Task PopulateDatabaseAsync(CancellationToken cancellationToken = default)

@@ -2,22 +2,26 @@
 
 <MudText Typo="Typo.h5" GutterBottom="true">Manage Persons</MudText>
 <DataManagementGrid TItem="Person"
-                    ItemTextExpression="@(p => $"{p.LastName}, {p.FirstName}")"
+                    ItemTextExpression="p => p.Name.ToString()"
                     PageRoute="/persons">
     <Columns>
         <PropertyColumn T="Person"
                         TProperty="string"
-                        Property="p => p.FirstName"
+                        Property="p => p.Name.FirstName"
                         Title="First Name" />
         <PropertyColumn T="Person"
                         TProperty="string"
-                        Property="p => p.LastName"
+                        Property="p => p.Name.LastName"
                         Title="Last Name" />
         <PropertyColumn T="Person"
                         TProperty="DateOnly"
-                        Format="D"
-                        Property="p => p.DateOfBirth"
+                        Format="d"
+                        Property="p => p.DateOfBirth.Date"
                         Title="Date of Birth" />
+        <PropertyColumn T="Person"
+                        TProperty="int"
+                        Property="p => p.DateOfBirth.Age"
+                        Title="Age" />
         <PropertyColumn T="Person"
                         TProperty="Gender"
                         Property="p => p.Gender" />
