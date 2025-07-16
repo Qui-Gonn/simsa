@@ -1,0 +1,30 @@
+@attribute [Route($"{RouteConstants.Exam}")]
+
+<PageTitle>Choose Exam</PageTitle>
+
+@if (events == null)
+{
+    <p>Lade Prüfungen...</p>
+}
+else
+{
+    <MudGrid GutterSize="24px">
+        @foreach (var exam in events)
+        {
+            <MudItem xs="12">
+                <MudCard Class="ma-2" Style="max-width: 900px; margin-left: auto; margin-right: auto; height: 100%; display: flex; flex-direction: column; justify-content: space-between;">
+                    <MudCardContent>
+                        <MudText Typo="Typo.h5" Class="mb-1">@exam.Name</MudText>
+                        <MudText Typo="Typo.subtitle2" Color="Color.Secondary">@exam.StartDate.ToString("d")</MudText>
+                        <MudText Typo="Typo.body2" Class="mt-2">@exam.Description</MudText>
+                    </MudCardContent>
+                    <MudCardActions Class="d-flex justify-end">
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="() => OpenExamDocumentation(exam.Id)">
+                            Öffnen
+                        </MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+        }
+    </MudGrid>
+}

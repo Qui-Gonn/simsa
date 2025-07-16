@@ -1,0 +1,11 @@
+@attribute [Route($"{RouteConstants.ExamDocumentation}/{{EventId:guid}}")]
+
+<h3>Exam Documentation</h3>
+<p>Dokumentation für Prüfung mit ID: @EventId</p>
+
+@code {
+
+    [Parameter]
+    public Guid EventId { get; set; }
+
+}
