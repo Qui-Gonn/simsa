@@ -35,8 +35,10 @@ internal class PersonMapper : IMapper<PersonEntity, Person>
     {
         protected override Dictionary<string, Expression<Func<PersonEntity, object>>> PropertyMap { get; } = new ()
         {
+            { nameof(Person.DateOfBirth), i => i.DateOfBirth },
             { nameof(Person.Name.FirstName), i => i.FirstName },
-            { nameof(Person.Name.LastName), i => i.LastName }
+            { nameof(Person.Name.LastName), i => i.LastName },
+            { nameof(Person.Gender), i => i.Gender }
         };
     }
 }

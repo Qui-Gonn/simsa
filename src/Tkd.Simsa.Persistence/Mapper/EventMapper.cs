@@ -37,6 +37,8 @@ internal class EventMapper : IMapper<EventEntity, Event>
     {
         protected override Dictionary<string, Expression<Func<EventEntity, object>>> PropertyMap { get; } = new ()
         {
+            { nameof(Event.Id), i => i.Id },
+            { nameof(Event.Description), i => i.Description },
             { nameof(Event.Name), i => i.Name },
             { nameof(Event.StartDate), i => i.StartDate }
         };
