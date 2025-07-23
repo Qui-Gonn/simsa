@@ -231,9 +231,13 @@
         
         var disciplines = new List<DisciplineDto>
         {
-            new(Domain.EventManagement.DisciplineType.Forms, "Formen", "Ausführung von Taekwon-Do-Formen", 1),
-            new(Domain.EventManagement.DisciplineType.Sparring, "Freikampf", "Kontrollierter Freikampf", 2),
-            new(Domain.EventManagement.DisciplineType.Breaking, "Bruchtest", "Techniktest mit Brettern", 3)
+            new(Domain.EventManagement.DisciplineType.PatternTul, "Pattern (Tul)", "Ausführung von Taekwon-Do-Tul (Pattern)", 1),
+            new(Domain.EventManagement.DisciplineType.FundamentalExercises, "Fundamentalübungen", "Grundlegende Techniken und Bewegungen", 2),
+            new(Domain.EventManagement.DisciplineType.StepSparring, "Step Sparring", "Vorbereitete Partnerübungen (Step Sparring)", 3),
+            new(Domain.EventManagement.DisciplineType.SelfDefense, "Selbstverteidigung", "Selbstverteidigungstechniken", 4),
+            new(Domain.EventManagement.DisciplineType.Sparring, "Freikampf", "Kontrollierter Freikampf", 5),
+            new(Domain.EventManagement.DisciplineType.Breaking, "Bruchtest", "Techniktest mit Brettern", 6),
+            new(Domain.EventManagement.DisciplineType.Theory, "Theorie", "Theoretisches Wissen und Terminologie", 7)
         };
 
         var participants = new List<ParticipantDto>
