@@ -50,7 +50,18 @@ internal class FakerCollection
                         i => i.StartDate,
                         f => f.Date.BetweenDateOnly(
                             DateOnly.FromDateTime(DateTime.UtcNow - TimeSpan.FromDays(365)),
-                            DateOnly.FromDateTime(DateTime.UtcNow + TimeSpan.FromDays(30))));
+                            DateOnly.FromDateTime(DateTime.UtcNow + TimeSpan.FromDays(30))))
+                    .RuleFor(i => i.ExaminationDisciplines, f => Enumerable.Range(1, 3).Select(_ => Discipline.Create(
+                        f.PickRandom<DisciplineType>(),
+                        f.Lorem.Word(),
+                        f.Lorem.Sentence(),
+                        f.Random.Int(1, 10))).ToList())
+                    .RuleFor(i => i.ExaminationProgress, f => ExaminationProgress.CreateInitial(
+                        Enumerable.Range(1, 3).Select(_ => Discipline.Create(
+                            f.PickRandom<DisciplineType>(),
+                            f.Lorem.Word(),
+                            f.Lorem.Sentence(),
+                            f.Random.Int(1, 10))).ToList()));
 
         var generatedItems = faker.Generate(25);
         this.GeneratedItems[faker] = generatedItems;

@@ -1,5 +1,6 @@
 namespace Tkd.Simsa.Blazor.WebApp.Extensions;
 
+using Tkd.Simsa.Blazor.WebApp.Endpoints;
 using Tkd.Simsa.DataGenerator;
 using Tkd.Simsa.Domain.EventManagement;
 using Tkd.Simsa.Domain.PersonManagement;
@@ -12,6 +13,9 @@ public static class WebApplicationExtensions
         var routeGroupBuilder = app.MapGroup("/api");
         routeGroupBuilder.MapDefaultEndpoints<Event>();
         routeGroupBuilder.MapDefaultEndpoints<Person>();
+        
+        // Map examination-specific endpoints
+        app.MapExaminationEndpoints();
     }
 
     public static async Task MigrateDatabaseAsync(this WebApplication app)

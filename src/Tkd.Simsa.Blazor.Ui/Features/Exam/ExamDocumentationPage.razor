@@ -1,11 +1,370 @@
+@using Tkd.Simsa.Application.EventManagement
+@using Tkd.Simsa.Blazor.Ui.Features.Exam.Components
 @attribute [Route($"{RouteConstants.ExamDocumentation}/{{EventId:guid}}")]
+@rendermode @(new InteractiveServerRenderMode())
 
-<h3>Exam Documentation</h3>
-<p>Dokumentation für Prüfung mit ID: @EventId</p>
+<div class="exam-documentation-container">
+    @if (IsLoading)
+    {
+        <div class="d-flex justify-content-center align-items-center" style="min-height: 300px;">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Lädt...</span>
+            </div>
+        </div>
+    }
+    else if (Examination == null)
+    {
+        <div class="alert alert-danger" role="alert">
+            <h4 class="alert-heading">Prüfung nicht gefunden</h4>
+            <p>Die angeforderte Prüfung mit der ID @EventId konnte nicht gefunden werden.</p>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-12">
+                <h1 class="mb-4">@Examination.Name - Dokumentation</h1>
+                
+                <!-- Progress Bar -->
+                <div class="mb-4">
+                    <DisciplineProgressBar 
+                        Disciplines="@Examination.Disciplines"
+                        CurrentDiscipline="@Examination.Progress.CurrentDiscipline"
+                        CompletedDisciplines="@Examination.Progress.CompletedDisciplines"
+                        CompletionPercentage="@Examination.Progress.CompletionPercentage" />
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Participant Selection Panel -->
+            <div class="col-lg-3 col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-users me-2"></i>Teilnehmer
+                        </h5>
+                    </div>
+                    <div class="card-body p-2">
+                        @if (Examination.Participants.Any())
+                        {
+                            <div class="list-group">
+                                @foreach (var participant in Examination.Participants)
+                                {
+                                    <button type="button" 
+                                            class="list-group-item list-group-item-action @(SelectedParticipantId == participant.Id ? "active" : "")"
+                                            @onclick="@(() => OnParticipantSelected(participant.Id))">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h6 class="mb-1">@participant.Name</h6>
+                                            <small class="@(GetParticipantCompletionStatus(participant.Id) == "completed" ? "text-success" : "text-muted")">
+                                                @(GetParticipantCompletionStatus(participant.Id) == "completed" ? "✓" : "⏳")
+                                            </small>
+                                        </div>
+                                        <p class="mb-1">@participant.BeltRank</p>
+                                        <small class="text-muted">@participant.Age Jahre</small>
+                                    </button>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <p class="text-muted text-center">Keine Teilnehmer registriert</p>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <!-- Documentation Panel -->
+            <div class="col-lg-9 col-md-8">
+                @if (SelectedParticipantId.HasValue && SelectedParticipant != null)
+                {
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <i class="fas fa-clipboard-check me-2"></i>
+                                Dokumentation - @SelectedParticipant.Name
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            @if (Examination.Disciplines.Any())
+                            {
+                                <!-- Current Discipline Display -->
+                                @if (CurrentDiscipline != null)
+                                {
+                                    <div class="alert alert-info">
+                                        <h6 class="alert-heading">Aktuelle Disziplin</h6>
+                                        <p class="mb-0">@CurrentDiscipline.Name - @CurrentDiscipline.Description</p>
+                                    </div>
+                                }
+
+                                <!-- Discipline Rating Component -->
+                                <div class="mb-4">
+                                    <DisciplineRatingComponent 
+                                        Discipline="@CurrentDiscipline"
+                                        Rating="@GetCurrentDisciplineRating()"
+                                        OnRatingChanged="@OnRatingChanged" />
+                                </div>
+
+                                <!-- Notes Component -->
+                                <div class="mb-4">
+                                    <ExaminationNotesComponent 
+                                        Notes="@GetCurrentNotes()"
+                                        OnNotesChanged="@OnNotesChanged" />
+                                </div>
+
+                                <!-- Action Buttons -->
+                                <div class="d-flex gap-2">
+                                    <button type="button" 
+                                            class="btn btn-primary"
+                                            disabled="@(!CanSaveCurrentResult)"
+                                            @onclick="@SaveCurrentResult">
+                                        <i class="fas fa-save me-2"></i>Ergebnis speichern
+                                    </button>
+                                    
+                                    @if (CurrentDiscipline != null && CanCompleteDiscipline)
+                                    {
+                                        <button type="button" 
+                                                class="btn btn-success"
+                                                @onclick="@(() => OnDisciplineCompleted(CurrentDiscipline))">
+                                            <i class="fas fa-check me-2"></i>Disziplin abschließen
+                                        </button>
+                                    }
+                                    
+                                    @if (CanCompleteParticipant)
+                                    {
+                                        <button type="button" 
+                                                class="btn btn-warning"
+                                                @onclick="@(() => OnParticipantCompleted(SelectedParticipantId!.Value))">
+                                            <i class="fas fa-user-check me-2"></i>Teilnehmer abschließen
+                                        </button>
+                                    }
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="alert alert-warning">
+                                    <h6 class="alert-heading">Keine Disziplinen definiert</h6>
+                                    <p class="mb-0">Für diese Prüfung sind noch keine Disziplinen konfiguriert.</p>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="card">
+                        <div class="card-body text-center py-5">
+                            <i class="fas fa-user-check fa-3x text-muted mb-3"></i>
+                            <h5 class="text-muted">Teilnehmer auswählen</h5>
+                            <p class="text-muted">Wählen Sie einen Teilnehmer aus der Liste aus, um mit der Dokumentation zu beginnen.</p>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>
 
 @code {
+    [Parameter] public Guid EventId { get; set; }
 
-    [Parameter]
-    public Guid EventId { get; set; }
+    private ExaminationDto? Examination { get; set; }
+    private Guid? SelectedParticipantId { get; set; }
+    private ParticipantDto? SelectedParticipant { get; set; }
+    private ExaminationResultDto? CurrentExaminationResult { get; set; }
+    private DisciplineDto? CurrentDiscipline { get; set; }
+    private DisciplineRatingDto? CurrentRating { get; set; }
+    private string CurrentNotes { get; set; } = string.Empty;
+    private bool IsLoading { get; set; } = true;
 
+    private bool CanSaveCurrentResult => CurrentDiscipline != null && CurrentRating != null && !string.IsNullOrEmpty(CurrentNotes.Trim());
+    private bool CanCompleteDiscipline => CurrentDiscipline != null && CurrentRating != null;
+    private bool CanCompleteParticipant => CurrentExaminationResult != null; // TODO: Add proper completion logic
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadExaminationAsync();
+    }
+
+    private async Task LoadExaminationAsync()
+    {
+        try
+        {
+            IsLoading = true;
+            
+            // TODO: Replace with actual service call
+            // var query = new GetExaminationByIdQuery(EventId);
+            // Examination = await Mediator.Send(query);
+            
+            // Placeholder data for development
+            await CreatePlaceholderData();
+            
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            // TODO: Add proper error handling/logging
+            Console.WriteLine($"Error loading examination: {ex.Message}");
+        }
+        finally
+        {
+            IsLoading = false;
+            StateHasChanged();
+        }
+    }
+
+    private async Task CreatePlaceholderData()
+    {
+        // Placeholder implementation for development
+        await Task.Delay(500);
+        
+        var disciplines = new List<DisciplineDto>
+        {
+            new(Domain.EventManagement.DisciplineType.Forms, "Formen", "Ausführung von Taekwondo-Formen", 1),
+            new(Domain.EventManagement.DisciplineType.Sparring, "Freikampf", "Kontrollierter Freikampf", 2),
+            new(Domain.EventManagement.DisciplineType.Breaking, "Bruchtest", "Techniktest mit Brettern", 3)
+        };
+
+        var participants = new List<ParticipantDto>
+        {
+            new(Guid.NewGuid(), "Max Mustermann", "1. Kup", 16, DateTime.Now.AddYears(-16)),
+            new(Guid.NewGuid(), "Anna Schmidt", "2. Kup", 14, DateTime.Now.AddYears(-14)),
+            new(Guid.NewGuid(), "Tom Weber", "3. Kup", 18, DateTime.Now.AddYears(-18))
+        };
+
+        var progress = new ExaminationProgressDto(
+            disciplines.First(),
+            [],
+            disciplines.Count,
+            0.0m
+        );
+
+        Examination = new ExaminationDto(
+            EventId,
+            "Dan-Prüfung 2025",
+            "Prüfung zum 1. Dan Schwarzgurt",
+            DateOnly.FromDateTime(DateTime.Today),
+            disciplines,
+            progress,
+            participants
+        );
+
+        CurrentDiscipline = disciplines.First();
+    }
+
+    private async Task OnParticipantSelected(Guid participantId)
+    {
+        SelectedParticipantId = participantId;
+        SelectedParticipant = Examination?.Participants.FirstOrDefault(p => p.Id == participantId);
+        
+        if (SelectedParticipantId.HasValue)
+        {
+            await LoadExaminationResultAsync(SelectedParticipantId.Value);
+        }
+    }
+
+    private async Task LoadExaminationResultAsync(Guid participantId)
+    {
+        try
+        {
+            // TODO: Replace with actual service call
+            // var query = new GetExaminationResultsQuery(EventId, participantId);
+            // CurrentExaminationResult = await Mediator.Send(query);
+            
+            await Task.Delay(100);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading examination result: {ex.Message}");
+        }
+    }
+
+    private void OnRatingChanged(DisciplineRatingDto rating)
+    {
+        CurrentRating = rating;
+        StateHasChanged();
+    }
+
+    private void OnNotesChanged(string notes)
+    {
+        CurrentNotes = notes;
+        StateHasChanged();
+    }
+
+    private async Task SaveCurrentResult()
+    {
+        if (!CanSaveCurrentResult || CurrentDiscipline == null || CurrentRating == null)
+            return;
+
+        try
+        {
+            var result = new DisciplineResultDto(
+                CurrentRating,
+                CurrentNotes,
+                DateTime.Now,
+                "Current User" // TODO: Get actual user
+            );
+
+            // TODO: Replace with actual service call
+            // var command = new UpdateDisciplineResultCommand(EventId, SelectedParticipantId!.Value, CurrentDiscipline.Type, result);
+            // await Mediator.Send(command);
+            
+            await LoadExaminationResultAsync(SelectedParticipantId!.Value);
+            await LoadExaminationAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error saving result: {ex.Message}");
+        }
+    }
+
+    private async Task OnDisciplineCompleted(DisciplineDto discipline)
+    {
+        try
+        {
+            // TODO: Replace with actual service call
+            // var command = new CompleteDisciplineCommand(EventId, discipline.Type);
+            // await Mediator.Send(command);
+            
+            await LoadExaminationAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error completing discipline: {ex.Message}");
+        }
+    }
+
+    private async Task OnParticipantCompleted(Guid participantId)
+    {
+        try
+        {
+            // TODO: Replace with actual service call
+            // var command = new CompleteParticipantExaminationCommand(EventId, participantId);
+            // await Mediator.Send(command);
+            
+            await LoadExaminationAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error completing participant: {ex.Message}");
+        }
+    }
+
+    private string GetParticipantCompletionStatus(Guid participantId)
+    {
+        // TODO: Implement actual completion status logic
+        return "pending"; // "pending", "in-progress", "completed"
+    }
+
+    private DisciplineRatingDto? GetCurrentDisciplineRating()
+    {
+        // TODO: Get rating from current examination result
+        return CurrentRating;
+    }
+
+    private string GetCurrentNotes()
+    {
+        // TODO: Get notes from current examination result
+        return CurrentNotes;
+    }
 }

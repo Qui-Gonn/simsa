@@ -18,5 +18,21 @@ internal class EventConfiguration : IEntityTypeConfiguration<EventEntity>
             .HasMaxLength(ConfigurationConstants.LongTextMaxLength);
         builder.Property(e => e.StartDate)
             .IsRequired();
+            
+        // Configure examination-specific properties
+        builder.Property(e => e.ExaminationProgressJson)
+            .HasColumnType("TEXT")
+            .IsRequired(false);
+            
+        // Configure navigation properties for disciplines and results
+        builder.HasMany(e => e.Disciplines)
+            .WithOne(d => d.Event)
+            .HasForeignKey(d => d.EventId)
+            .OnDelete(DeleteBehavior.Cascade);
+            
+        builder.HasMany(e => e.ExaminationResults)
+            .WithOne(er => er.Examination)
+            .HasForeignKey(er => er.ExaminationId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

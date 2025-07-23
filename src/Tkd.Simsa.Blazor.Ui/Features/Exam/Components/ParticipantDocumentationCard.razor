@@ -1,0 +1,253 @@
+@using Tkd.Simsa.Application.EventManagement
+
+<div class="documentation-card">
+    <div class="card-header">
+        <div class="participant-header">
+            <h5>
+                <i class="fas fa-user-graduate"></i>
+                @Participant.Name
+            </h5>
+            <div class="participant-details">
+                <span class="badge bg-secondary">@Participant.BeltRank</span>
+                <span class="age-badge">Age: @Participant.Age</span>
+            </div>
+        </div>
+        @if (ExistingResult != null && ExistingResult.Results.Any())
+        {
+            <div class="existing-progress">
+                <small class="text-muted">
+                    @ExistingResult.Results.Count discipline(s) evaluated
+                </small>
+            </div>
+        }
+    </div>
+    
+    <div class="card-body">
+        @if (CurrentDiscipline != null)
+        {
+            <div class="current-discipline">
+                <h6>
+                    <i class="fas fa-star"></i>
+                    Current: @CurrentDiscipline.Name
+                </h6>
+                <p class="discipline-description">@CurrentDiscipline.Description</p>
+                <div class="discipline-type-badge">
+                    <span class="badge bg-info">@CurrentDiscipline.Type</span>
+                </div>
+            </div>
+            
+            <div class="documentation-form">
+                <DisciplineRatingComponent 
+                    Discipline="CurrentDiscipline"
+                    Rating="currentRating"
+                    OnRatingChanged="OnRatingChanged" />
+                    
+                <ExaminationNotesComponent 
+                    Participant="Participant"
+                    Discipline="CurrentDiscipline"
+                    Notes="currentNotes"
+                    ExistingNotes="GetExistingNotes()"
+                    ExistingNotesAuthor="GetExistingNotesAuthor()"
+                    ExistingNotesDate="GetExistingNotesDate()"
+                    OnNotesChanged="OnNotesChanged" />
+                    
+                <div class="documentation-actions">
+                    <button @onclick="SaveResult" 
+                            class="btn btn-primary" 
+                            disabled="@(!CanSave)">
+                        <i class="fas fa-save"></i>
+                        @(HasExistingResult() ? "Update Result" : "Save Result")
+                    </button>
+                    <button @onclick="ClearForm" 
+                            class="btn btn-outline-secondary"
+                            disabled="@(!HasUnsavedChanges)">
+                        <i class="fas fa-undo"></i>
+                        Clear Form
+                    </button>
+                    @if (HasExistingResult())
+                    {
+                        <button @onclick="LoadExistingResult" 
+                                class="btn btn-outline-info">
+                            <i class="fas fa-download"></i>
+                            Load Existing
+                        </button>
+                    }
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="no-discipline-message">
+                <i class="fas fa-info-circle fa-2x text-muted"></i>
+                <h6>No Current Discipline</h6>
+                <p>Please select a discipline from the progress bar above to begin documentation.</p>
+            </div>
+        }
+        
+        @if (ExistingResult?.Results.Any() == true)
+        {
+            <div class="existing-results">
+                <h6><i class="fas fa-history"></i> Previous Results</h6>
+                <div class="results-summary">
+                    @foreach (var result in ExistingResult.Results)
+                    {
+                        <div class="result-item">
+                            <div class="result-discipline">@result.Key.Name</div>
+                            <div class="result-rating">
+                                <span class="badge @(result.Value.Rating.Passed ? "bg-success" : "bg-warning")">
+                                    @result.Value.Rating.Description
+                                </span>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    .documentation-card {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        margin-bottom: 1.5rem;
+        overflow: hidden;
+    }
+
+    .card-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 1.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .participant-header h5 {
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .participant-details {
+        margin-top: 0.5rem;
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+    }
+
+    .age-badge {
+        background: rgba(255,255,255,0.2);
+        padding: 0.25rem 0.5rem;
+        border-radius: 12px;
+        font-size: 0.875rem;
+    }
+
+    .existing-progress {
+        text-align: right;
+    }
+
+    .card-body {
+        padding: 1.5rem;
+    }
+
+    .current-discipline {
+        background: #f8f9fa;
+        border-left: 4px solid #007bff;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+        border-radius: 0 4px 4px 0;
+    }
+
+    .current-discipline h6 {
+        margin-bottom: 0.5rem;
+        color: #2c3e50;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .discipline-description {
+        margin-bottom: 0.75rem;
+        color: #6c757d;
+        line-height: 1.5;
+    }
+
+    .discipline-type-badge {
+        margin-bottom: 0;
+    }
+
+    .documentation-form {
+        space-y: 1.5rem;
+    }
+
+    .documentation-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 2rem;
+        padding-top: 1rem;
+        border-top: 1px solid #dee2e6;
+    }
+
+    .no-discipline-message {
+        text-align: center;
+        padding: 3rem 1rem;
+        color: #6c757d;
+    }
+
+    .no-discipline-message h6 {
+        margin: 1rem 0 0.5rem 0;
+    }
+
+    .existing-results {
+        margin-top: 2rem;
+        padding-top: 1rem;
+        border-top: 2px solid #f1f1f1;
+    }
+
+    .existing-results h6 {
+        margin-bottom: 1rem;
+        color: #495057;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .results-summary {
+        display: grid;
+        gap: 0.5rem;
+    }
+
+    .result-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem;
+        background: #f8f9fa;
+        border-radius: 4px;
+        border-left: 3px solid #6c757d;
+    }
+
+    .result-discipline {
+        font-weight: 500;
+        color: #2c3e50;
+    }
+
+    @@media (max-width: 768px) {
+        .card-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+        
+        .documentation-actions {
+            flex-direction: column;
+        }
+        
+        .documentation-actions button {
+            width: 100%;
+        }
+    }
+</style>

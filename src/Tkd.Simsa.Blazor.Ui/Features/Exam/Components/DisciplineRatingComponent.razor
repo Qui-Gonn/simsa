@@ -1,0 +1,193 @@
+@using Tkd.Simsa.Application.EventManagement
+
+<div class="discipline-rating-component">
+    <label class="form-label">
+        <strong>Rating for @(Discipline?.Name ?? "Discipline")</strong>
+    </label>
+    
+    <div class="rating-modes">
+        <div class="btn-group" role="group">
+            <button type="button" 
+                    class="btn @(IsNumericMode ? "btn-primary" : "btn-outline-primary")"
+                    @onclick="() => SetRatingMode(true)">
+                <i class="fas fa-sort-numeric-up"></i> Numeric (0-10)
+            </button>
+            <button type="button" 
+                    class="btn @(!IsNumericMode ? "btn-primary" : "btn-outline-primary")"
+                    @onclick="() => SetRatingMode(false)">
+                <i class="fas fa-check"></i> Pass/Fail
+            </button>
+        </div>
+    </div>
+    
+    @if (IsNumericMode)
+    {
+        <div class="numeric-rating">
+            <div class="rating-slider">
+                <input type="range" 
+                       min="0" 
+                       max="10" 
+                       step="1"
+                       @bind="numericValue" 
+                       @bind:event="oninput"
+                       @onchange="OnNumericValueChanged"
+                       class="form-range" />
+                <div class="rating-value">
+                    <span class="rating-number">@numericValue</span>
+                    <span class="rating-description">@GetRatingDescription(numericValue)</span>
+                </div>
+            </div>
+            
+            <div class="rating-scale">
+                @for (int i = 0; i <= 10; i++)
+                {
+                    <div class="scale-point @(i == numericValue ? "active" : "")" 
+                         @onclick="() => SetNumericValue(i)">
+                        <div class="scale-number">@i</div>
+                        <div class="scale-label">@GetRatingDescription(i)</div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="pass-fail-rating">
+            <div class="btn-group btn-group-lg w-100" role="group">
+                <button type="button" 
+                        class="btn @(passFailValue == true ? "btn-success" : "btn-outline-success")"
+                        @onclick="() => SetPassFail(true)">
+                    <i class="fas fa-check-circle"></i> Pass
+                </button>
+                <button type="button" 
+                        class="btn @(passFailValue == false ? "btn-danger" : "btn-outline-danger")"
+                        @onclick="() => SetPassFail(false)">
+                    <i class="fas fa-times-circle"></i> Fail
+                </button>
+            </div>
+        </div>
+    }
+    
+    @if (Rating != null)
+    {
+        <div class="current-rating">
+            <div class="alert @(Rating.Passed ? "alert-success" : "alert-warning")">
+                <strong>Current Rating:</strong> @Rating.Description 
+                <span class="rating-badge">@Rating.NumericValue/10</span>
+            </div>
+        </div>
+    }
+</div>
+
+<style>
+    .discipline-rating-component {
+        background: white;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .rating-modes {
+        margin: 1rem 0;
+    }
+
+    .numeric-rating {
+        margin-top: 1rem;
+    }
+
+    .rating-slider {
+        margin-bottom: 2rem;
+    }
+
+    .rating-value {
+        text-align: center;
+        margin-top: 1rem;
+    }
+
+    .rating-number {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #2c3e50;
+        margin-right: 1rem;
+    }
+
+    .rating-description {
+        font-size: 1.1rem;
+        color: #7f8c8d;
+    }
+
+    .rating-scale {
+        display: flex;
+        justify-content: space-between;
+        gap: 0.5rem;
+        overflow-x: auto;
+        padding-bottom: 0.5rem;
+    }
+
+    .scale-point {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 0.5rem;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        min-width: 60px;
+        text-align: center;
+        border: 2px solid transparent;
+    }
+
+    .scale-point:hover {
+        background: #f8f9fa;
+        border-color: #3498db;
+    }
+
+    .scale-point.active {
+        background: #3498db;
+        color: white;
+        border-color: #2980b9;
+    }
+
+    .scale-number {
+        font-weight: bold;
+        font-size: 1.1rem;
+        margin-bottom: 0.25rem;
+    }
+
+    .scale-label {
+        font-size: 0.7rem;
+        text-align: center;
+        line-height: 1.2;
+    }
+
+    .pass-fail-rating {
+        margin-top: 1rem;
+    }
+
+    .current-rating {
+        margin-top: 1rem;
+    }
+
+    .rating-badge {
+        float: right;
+        background: rgba(255,255,255,0.3);
+        padding: 0.25rem 0.5rem;
+        border-radius: 12px;
+        font-weight: bold;
+    }
+
+    @@media (max-width: 768px) {
+        .rating-scale {
+            flex-wrap: wrap;
+        }
+        
+        .scale-point {
+            min-width: 50px;
+        }
+        
+        .scale-label {
+            font-size: 0.6rem;
+        }
+    }
+</style>

@@ -1,0 +1,222 @@
+@using Tkd.Simsa.Application.EventManagement
+
+<div class="participant-selection">
+    <div class="selection-header">
+        <h4>Participants (@Participants.Count())</h4>
+        <div class="selection-controls">
+            <button @onclick="SelectAll" class="btn btn-sm btn-outline-primary" disabled="@IsAllSelected">
+                <i class="fas fa-check-double"></i> Select All
+            </button>
+            <button @onclick="ClearSelection" class="btn btn-sm btn-outline-secondary" disabled="@(!SelectedParticipants.Any())">
+                <i class="fas fa-times"></i> Clear
+            </button>
+        </div>
+    </div>
+    
+    <div class="search-box">
+        <div class="input-group">
+            <span class="input-group-text">
+                <i class="fas fa-search"></i>
+            </span>
+            <input @bind="searchFilter" @bind:event="oninput" 
+                   placeholder="Search participants..." 
+                   class="form-control" />
+            @if (!string.IsNullOrEmpty(searchFilter))
+            {
+                <button @onclick="ClearSearch" class="btn btn-outline-secondary" type="button">
+                    <i class="fas fa-times"></i>
+                </button>
+            }
+        </div>
+    </div>
+    
+    <div class="participant-list">
+        @if (FilteredParticipants.Any())
+        {
+            @foreach (var participant in FilteredParticipants)
+            {
+                <div class="participant-item @(IsSelected(participant) ? "selected" : "")"
+                     @onclick="() => ToggleSelection(participant)">
+                    <div class="participant-info">
+                        <div class="participant-name">
+                            <i class="fas fa-user"></i>
+                            @participant.Name
+                        </div>
+                        <div class="participant-details">
+                            <span class="badge bg-secondary">@participant.BeltRank</span>
+                            <span class="age">Age: @participant.Age</span>
+                        </div>
+                    </div>
+                    <div class="selection-indicator">
+                        @if (IsSelected(participant))
+                        {
+                            <i class="fas fa-check-circle text-success"></i>
+                        }
+                        else
+                        {
+                            <i class="far fa-circle text-muted"></i>
+                        }
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="no-participants">
+                <i class="fas fa-search fa-2x text-muted"></i>
+                <p>No participants found matching "@searchFilter"</p>
+            </div>
+        }
+    </div>
+    
+    @if (SelectedParticipants.Any())
+    {
+        <div class="selection-summary">
+            <div class="summary-text">
+                <i class="fas fa-users"></i>
+                @SelectedParticipants.Count() of @Participants.Count() participants selected
+            </div>
+        </div>
+    }
+</div>
+
+<style>
+    .participant-selection {
+        background: white;
+        border-radius: 8px;
+        height: calc(100vh - 250px);
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .selection-header {
+        padding: 1rem;
+        border-bottom: 1px solid #dee2e6;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-shrink: 0;
+    }
+
+    .selection-header h4 {
+        margin: 0;
+        color: #2c3e50;
+    }
+
+    .selection-controls {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .search-box {
+        padding: 1rem;
+        border-bottom: 1px solid #dee2e6;
+        flex-shrink: 0;
+    }
+
+    .participant-list {
+        flex: 1;
+        overflow-y: auto;
+        padding: 0.5rem;
+    }
+
+    .participant-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+        margin-bottom: 0.5rem;
+        border: 2px solid #dee2e6;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        background: #f8f9fa;
+    }
+
+    .participant-item:hover {
+        border-color: #3498db;
+        transform: translateX(4px);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .participant-item.selected {
+        border-color: #27ae60;
+        background: #e8f5e8;
+    }
+
+    .participant-info {
+        flex: 1;
+    }
+
+    .participant-name {
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+        color: #2c3e50;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .participant-details {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        font-size: 0.9rem;
+    }
+
+    .age {
+        color: #7f8c8d;
+    }
+
+    .selection-indicator {
+        font-size: 1.2rem;
+        margin-left: 1rem;
+    }
+
+    .no-participants {
+        text-align: center;
+        padding: 2rem;
+        color: #7f8c8d;
+    }
+
+    .no-participants p {
+        margin-top: 1rem;
+        margin-bottom: 0;
+    }
+
+    .selection-summary {
+        padding: 1rem;
+        border-top: 1px solid #dee2e6;
+        background: #f8f9fa;
+        border-radius: 0 0 8px 8px;
+        flex-shrink: 0;
+    }
+
+    .summary-text {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-weight: bold;
+        color: #2c3e50;
+    }
+
+    /* Scrollbar styling */
+    .participant-list::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .participant-list::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 3px;
+    }
+
+    .participant-list::-webkit-scrollbar-thumb {
+        background: #bdc3c7;
+        border-radius: 3px;
+    }
+
+    .participant-list::-webkit-scrollbar-thumb:hover {
+        background: #7f8c8d;
+    }
+</style>
