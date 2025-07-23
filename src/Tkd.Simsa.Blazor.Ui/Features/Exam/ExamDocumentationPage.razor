@@ -3,102 +3,106 @@
 @attribute [Route($"{RouteConstants.ExamDocumentation}/{{EventId:guid}}")]
 @rendermode @(new InteractiveServerRenderMode())
 
-<div class="exam-documentation-container">
+<MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="pa-6">
     @if (IsLoading)
     {
-        <div class="d-flex justify-content-center align-items-center" style="min-height: 300px;">
-            <div class="spinner-border text-primary" role="status">
-                <span class="visually-hidden">Lädt...</span>
-            </div>
-        </div>
+        <MudStack AlignItems="AlignItems.Center" Justify="Justify.Center" Style="min-height: 300px;">
+            <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Large" />
+            <MudText Typo="Typo.h6">Lädt...</MudText>
+        </MudStack>
     }
     else if (Examination == null)
     {
-        <div class="alert alert-danger" role="alert">
-            <h4 class="alert-heading">Prüfung nicht gefunden</h4>
-            <p>Die angeforderte Prüfung mit der ID @EventId konnte nicht gefunden werden.</p>
-        </div>
+        <MudAlert Severity="Severity.Error" ShowCloseIcon="false">
+            <ChildContent>
+                <MudText Typo="Typo.h6">Prüfung nicht gefunden</MudText>
+                <MudText>Die angeforderte Prüfung mit der ID @EventId konnte nicht gefunden werden.</MudText>
+            </ChildContent>
+        </MudAlert>
     }
     else
     {
-        <div class="row">
-            <div class="col-12">
-                <h1 class="mb-4">@Examination.Name - Dokumentation</h1>
+        <MudGrid>
+            <MudItem xs="12">
+                <MudText Typo="Typo.h3" Class="mb-6">@Examination.Name - Dokumentation</MudText>
                 
                 <!-- Progress Bar -->
-                <div class="mb-4">
+                <MudPaper Class="pa-4 mb-6">
                     <DisciplineProgressBar 
                         Disciplines="@Examination.Disciplines"
                         CurrentDiscipline="@Examination.Progress.CurrentDiscipline"
                         CompletedDisciplines="@Examination.Progress.CompletedDisciplines"
                         CompletionPercentage="@Examination.Progress.CompletionPercentage" />
-                </div>
-            </div>
-        </div>
+                </MudPaper>
+            </MudItem>
+        </MudGrid>
 
-        <div class="row">
+        <MudGrid>
             <!-- Participant Selection Panel -->
-            <div class="col-lg-3 col-md-4 mb-4">
-                <div class="card h-100">
-                    <div class="card-header">
-                        <h5 class="mb-0">
-                            <i class="fas fa-users me-2"></i>Teilnehmer
-                        </h5>
-                    </div>
-                    <div class="card-body p-2">
+            <MudItem xs="12" lg="3" md="4">
+                <MudPaper Class="pa-4" Style="height: 100%">
+                    <MudStack>
+                        <MudStack Row AlignItems="AlignItems.Center" Spacing="2">
+                            <MudIcon Icon="Icons.Material.Filled.People" />
+                            <MudText Typo="Typo.h6">Teilnehmer</MudText>
+                        </MudStack>
+                        
                         @if (Examination.Participants.Any())
                         {
-                            <div class="list-group">
+                            <MudList T="ParticipantDto" Clickable="true" Dense="true">
                                 @foreach (var participant in Examination.Participants)
                                 {
-                                    <button type="button" 
-                                            class="list-group-item list-group-item-action @(SelectedParticipantId == participant.Id ? "active" : "")"
-                                            @onclick="@(() => OnParticipantSelected(participant.Id))">
-                                        <div class="d-flex w-100 justify-content-between">
-                                            <h6 class="mb-1">@participant.Name</h6>
-                                            <small class="@(GetParticipantCompletionStatus(participant.Id) == "completed" ? "text-success" : "text-muted")">
-                                                @(GetParticipantCompletionStatus(participant.Id) == "completed" ? "✓" : "⏳")
-                                            </small>
+                                    <MudListItem T="ParticipantDto" @onclick="@(() => OnParticipantSelected(participant.Id))"
+                                                 Class="@(SelectedParticipantId == participant.Id ? "mud-selected-item" : "")">>
+                                        <div>
+                                            <MudStack Row Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
+                                                <div>
+                                                    <MudText Typo="Typo.subtitle1">@participant.Name</MudText>
+                                                    <MudText Typo="Typo.body2" Color="Color.Secondary">@participant.BeltRank</MudText>
+                                                    <MudText Typo="Typo.caption" Color="Color.Tertiary">@participant.Age Jahre</MudText>
+                                                </div>
+                                                <MudIcon Icon="@(GetParticipantCompletionStatus(participant.Id) == "completed" ? Icons.Material.Filled.CheckCircle : Icons.Material.Filled.HourglassEmpty)" 
+                                                         Color="@(GetParticipantCompletionStatus(participant.Id) == "completed" ? Color.Success : Color.Default)" />
+                                            </MudStack>
                                         </div>
-                                        <p class="mb-1">@participant.BeltRank</p>
-                                        <small class="text-muted">@participant.Age Jahre</small>
-                                    </button>
+                                    </MudListItem>
                                 }
-                            </div>
+                            </MudList>
                         }
                         else
                         {
-                            <p class="text-muted text-center">Keine Teilnehmer registriert</p>
+                            <MudText Typo="Typo.body2" Align="Align.Center" Color="Color.Tertiary">Keine Teilnehmer registriert</MudText>
                         }
-                    </div>
-                </div>
-            </div>
+                    </MudStack>
+                </MudPaper>
+            </MudItem>
 
             <!-- Documentation Panel -->
-            <div class="col-lg-9 col-md-8">
+            <MudItem xs="12" lg="9" md="8">
                 @if (SelectedParticipantId.HasValue && SelectedParticipant != null)
                 {
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="mb-0">
-                                <i class="fas fa-clipboard-check me-2"></i>
-                                Dokumentation - @SelectedParticipant.Name
-                            </h5>
-                        </div>
-                        <div class="card-body">
+                    <MudPaper Class="pa-4">
+                        <MudStack>
+                            <MudStack Row AlignItems="AlignItems.Center" Spacing="2">
+                                <MudIcon Icon="Icons.Material.Filled.Assignment" />
+                                <MudText Typo="Typo.h6">Dokumentation - @SelectedParticipant.Name</MudText>
+                            </MudStack>
+                            
                             @if (Examination.Disciplines.Any())
                             {
                                 <!-- Current Discipline Display -->
                                 @if (CurrentDiscipline != null)
                                 {
-                                    <div class="alert alert-info">
-                                        <h6 class="alert-heading">Aktuelle Disziplin</h6>
-                                        <p class="mb-0">@CurrentDiscipline.Name - @CurrentDiscipline.Description</p>
-                                    </div>
+                                    <MudAlert Severity="Severity.Info" ShowCloseIcon="false">
+                                        <ChildContent>
+                                            <MudText Typo="Typo.subtitle1">Aktuelle Disziplin</MudText>
+                                            <MudText>@CurrentDiscipline.Name - @CurrentDiscipline.Description</MudText>
+                                        </ChildContent>
+                                    </MudAlert>
                                 }
 
                                 <!-- Discipline Rating Component -->
-                                <div class="mb-4">
+                                <div>
                                     <DisciplineRatingComponent 
                                         Discipline="@CurrentDiscipline"
                                         Rating="@GetCurrentDisciplineRating()"
@@ -106,64 +110,71 @@
                                 </div>
 
                                 <!-- Notes Component -->
-                                <div class="mb-4">
+                                <div>
                                     <ExaminationNotesComponent 
                                         Notes="@GetCurrentNotes()"
                                         OnNotesChanged="@OnNotesChanged" />
                                 </div>
 
                                 <!-- Action Buttons -->
-                                <div class="d-flex gap-2">
-                                    <button type="button" 
-                                            class="btn btn-primary"
-                                            disabled="@(!CanSaveCurrentResult)"
-                                            @onclick="@SaveCurrentResult">
-                                        <i class="fas fa-save me-2"></i>Ergebnis speichern
-                                    </button>
+                                <MudStack Row Spacing="2">
+                                    <MudButton Variant="Variant.Filled" 
+                                               Color="Color.Primary"
+                                               StartIcon="Icons.Material.Filled.Save"
+                                               Disabled="@(!CanSaveCurrentResult)"
+                                               OnClick="@SaveCurrentResult">
+                                        Ergebnis speichern
+                                    </MudButton>
                                     
                                     @if (CurrentDiscipline != null && CanCompleteDiscipline)
                                     {
-                                        <button type="button" 
-                                                class="btn btn-success"
-                                                @onclick="@(() => OnDisciplineCompleted(CurrentDiscipline))">
-                                            <i class="fas fa-check me-2"></i>Disziplin abschließen
-                                        </button>
+                                        <MudButton Variant="Variant.Filled" 
+                                                   Color="Color.Success"
+                                                   StartIcon="Icons.Material.Filled.Check"
+                                                   OnClick="@(() => OnDisciplineCompleted(CurrentDiscipline))">
+                                            Disziplin abschließen
+                                        </MudButton>
                                     }
                                     
                                     @if (CanCompleteParticipant)
                                     {
-                                        <button type="button" 
-                                                class="btn btn-warning"
-                                                @onclick="@(() => OnParticipantCompleted(SelectedParticipantId!.Value))">
-                                            <i class="fas fa-user-check me-2"></i>Teilnehmer abschließen
-                                        </button>
+                                        <MudButton Variant="Variant.Filled" 
+                                                   Color="Color.Warning"
+                                                   StartIcon="Icons.Material.Filled.PersonAdd"
+                                                   OnClick="@(() => OnParticipantCompleted(SelectedParticipantId!.Value))">
+                                            Teilnehmer abschließen
+                                        </MudButton>
                                     }
-                                </div>
+                                </MudStack>
                             }
                             else
                             {
-                                <div class="alert alert-warning">
-                                    <h6 class="alert-heading">Keine Disziplinen definiert</h6>
-                                    <p class="mb-0">Für diese Prüfung sind noch keine Disziplinen konfiguriert.</p>
-                                </div>
+                                <MudAlert Severity="Severity.Warning" ShowCloseIcon="false">
+                                    <ChildContent>
+                                        <MudText Typo="Typo.subtitle1">Keine Disziplinen definiert</MudText>
+                                        <MudText>Für diese Prüfung sind noch keine Disziplinen konfiguriert.</MudText>
+                                    </ChildContent>
+                                </MudAlert>
                             }
-                        </div>
-                    </div>
+                        </MudStack>
+                    </MudPaper>
                 }
                 else
                 {
-                    <div class="card">
-                        <div class="card-body text-center py-5">
-                            <i class="fas fa-user-check fa-3x text-muted mb-3"></i>
-                            <h5 class="text-muted">Teilnehmer auswählen</h5>
-                            <p class="text-muted">Wählen Sie einen Teilnehmer aus der Liste aus, um mit der Dokumentation zu beginnen.</p>
-                        </div>
-                    </div>
+                    <MudPaper Class="pa-8">
+                        <MudStack AlignItems="AlignItems.Center" Spacing="4">
+                            <MudIcon Icon="Icons.Material.Filled.PersonAdd" Size="Size.Large" Color="Color.Tertiary" />
+                            <MudText Typo="Typo.h6" Color="Color.Tertiary">Teilnehmer auswählen</MudText>
+                            <MudText Typo="Typo.body2" Color="Color.Tertiary" Align="Align.Center">
+                                Wählen Sie einen Teilnehmer aus der Liste aus, um mit der Dokumentation zu beginnen.
+                            </MudText>
+                        </MudStack>
+                    </MudPaper>
                 }
-            </div>
-        </div>
+            </MudItem>
+        </MudGrid>
     }
-</div>
+</MudContainer>
 
 @code {
     [Parameter] public Guid EventId { get; set; }

@@ -93,4 +93,12 @@ public partial class ParticipantSelectionList : ComponentBase
     {
         searchFilter = string.Empty;
     }
+    
+    /// <summary>
+    /// Gets the selection state for a checkbox binding.
+    /// </summary>
+    /// <param name="participant">The participant to check</param>
+    /// <returns>True if selected</returns>
+    private bool GetSelectionState(ParticipantDto participant) =>
+        IsSelected(participant);
 }

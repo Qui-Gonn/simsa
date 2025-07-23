@@ -1,172 +1,35 @@
 @using Tkd.Simsa.Application.EventManagement
+@using MudBlazor
 
-<div class="discipline-progress-container">
-    <div class="progress-header">
-        <h4>Examination Progress (@CompletedDisciplines.Count / @Disciplines.Count)</h4>
-        <div class="progress-percentage">@(CompletionPercentage.ToString("F0"))% Complete</div>
-    </div>
+<MudStack Spacing="4">
+    <MudStack Row Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
+        <MudText Typo="Typo.h5">Examination Progress (@CompletedDisciplines.Count / @Disciplines.Count)</MudText>
+        <MudText Typo="Typo.h6" Color="Color.Primary">@(CompletionPercentage.ToString("F0"))% Complete</MudText>
+    </MudStack>
     
-    <div class="progress-steps">
+    <MudGrid>
         @foreach (var (discipline, index) in Disciplines.Select((d, i) => (d, i)))
         {
-            <div class="progress-step @GetStepClass(discipline)" 
-                 @onclick="() => OnDisciplineSelected.InvokeAsync(discipline)">
-                <div class="step-number">@(index + 1)</div>
-                <div class="step-name">@discipline.Name</div>
-                <div class="step-type">@discipline.Type</div>
-                <div class="step-indicator">
-                    @if (CompletedDisciplines.Any(cd => cd.Name == discipline.Name))
-                    {
-                        <i class="fas fa-check"></i>
-                    }
-                    else if (CurrentDiscipline?.Name == discipline.Name)
-                    {
-                        <i class="fas fa-play"></i>
-                    }
-                    else
-                    {
-                        <i class="far fa-circle"></i>
-                    }
-                </div>
-            </div>
+            <MudItem xs="12" sm="6" md="4" lg="3">
+                <MudPaper Class="@($"pa-3 ma-1 {GetStepClass(discipline)}")" 
+                          Style="cursor: pointer; transition: all 0.3s ease;"
+                          @onclick="() => OnDisciplineSelected.InvokeAsync(discipline)">
+                    <MudStack AlignItems="AlignItems.Center" Spacing="2">
+                        <MudAvatar Color="@GetStepColor(discipline)" Size="Size.Medium">
+                            @(index + 1)
+                        </MudAvatar>
+                        <MudText Typo="Typo.subtitle2" Align="Align.Center">@discipline.Name</MudText>
+                        <MudChip T="string" Size="Size.Small" Color="Color.Info" Variant="Variant.Text">@discipline.Type</MudChip>
+                        <MudIcon Icon="@GetStepIcon(discipline)" Color="@GetStepColor(discipline)" />
+                    </MudStack>
+                </MudPaper>
+            </MudItem>
         }
-    </div>
+    </MudGrid>
     
-    <div class="progress-bar">
-        <div class="progress-fill" style="width: @(CompletionPercentage)%"></div>
-    </div>
-</div>
-
-<style>
-    .discipline-progress-container {
-        background: white;
-        border-radius: 8px;
-        padding: 1.5rem;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        margin-bottom: 2rem;
-    }
-
-    .progress-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 1rem;
-    }
-
-    .progress-header h4 {
-        margin: 0;
-        color: #2c3e50;
-    }
-
-    .progress-percentage {
-        font-weight: bold;
-        color: #27ae60;
-    }
-
-    .progress-steps {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 1rem;
-        gap: 0.5rem;
-        overflow-x: auto;
-        padding-bottom: 0.5rem;
-    }
-
-    .progress-step {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 1rem;
-        border-radius: 8px;
-        border: 2px solid #ecf0f1;
-        background: #f8f9fa;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        min-width: 140px;
-        text-align: center;
-    }
-
-    .progress-step:hover {
-        border-color: #3498db;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    }
-
-    .progress-step.current {
-        border-color: #3498db;
-        background: #e3f2fd;
-    }
-
-    .progress-step.completed {
-        border-color: #27ae60;
-        background: #e8f5e8;
-    }
-
-    .step-number {
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
-        background: #bdc3c7;
-        color: white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: bold;
-        margin-bottom: 0.5rem;
-    }
-
-    .progress-step.current .step-number {
-        background: #3498db;
-    }
-
-    .progress-step.completed .step-number {
-        background: #27ae60;
-    }
-
-    .step-name {
-        font-weight: bold;
-        margin-bottom: 0.25rem;
-        color: #2c3e50;
-    }
-
-    .step-type {
-        font-size: 0.85rem;
-        color: #7f8c8d;
-        margin-bottom: 0.5rem;
-    }
-
-    .step-indicator {
-        font-size: 1.2rem;
-    }
-
-    .progress-step.current .step-indicator {
-        color: #3498db;
-    }
-
-    .progress-step.completed .step-indicator {
-        color: #27ae60;
-    }
-
-    .progress-bar {
-        height: 8px;
-        background: #ecf0f1;
-        border-radius: 4px;
-        overflow: hidden;
-    }
-
-    .progress-fill {
-        height: 100%;
-        background: linear-gradient(90deg, #3498db, #27ae60);
-        transition: width 0.5s ease;
-    }
-
-    @@media (max-width: 768px) {
-        .progress-steps {
-            flex-wrap: wrap;
-        }
-        
-        .progress-step {
-            min-width: 120px;
-        }
-    }
-</style>
+    <MudProgressLinear Color="Color.Primary" 
+                       Value="@((double)CompletionPercentage)" 
+                       Size="Size.Medium" 
+                       Rounded="true" 
+                       Striped="true" />
+</MudStack>

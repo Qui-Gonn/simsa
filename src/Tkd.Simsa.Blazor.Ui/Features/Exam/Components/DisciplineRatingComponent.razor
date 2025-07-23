@@ -1,83 +1,85 @@
 @using Tkd.Simsa.Application.EventManagement
 
-<div class="discipline-rating-component">
-    <label class="form-label">
-        <strong>Rating for @(Discipline?.Name ?? "Discipline")</strong>
-    </label>
+<MudStack Spacing="3">
+    <MudText Typo="Typo.h6">
+        Rating for @(Discipline?.Name ?? "Discipline")
+    </MudText>
     
-    <div class="rating-modes">
-        <div class="btn-group" role="group">
-            <button type="button" 
-                    class="btn @(IsNumericMode ? "btn-primary" : "btn-outline-primary")"
-                    @onclick="() => SetRatingMode(true)">
-                <i class="fas fa-sort-numeric-up"></i> Numeric (0-10)
-            </button>
-            <button type="button" 
-                    class="btn @(!IsNumericMode ? "btn-primary" : "btn-outline-primary")"
-                    @onclick="() => SetRatingMode(false)">
-                <i class="fas fa-check"></i> Pass/Fail
-            </button>
-        </div>
-    </div>
+    <MudToggleGroup T="bool" Value="@IsNumericMode" ValueChanged="@SetRatingMode" 
+                    SelectionMode="SelectionMode.SingleSelection" Color="Color.Primary">
+        <MudToggleItem Value="true" Icon="Icons.Material.Filled.Numbers" Text="Numeric (0-10)" />
+        <MudToggleItem Value="false" Icon="Icons.Material.Filled.Check" Text="Pass/Fail" />
+    </MudToggleGroup>
     
     @if (IsNumericMode)
     {
-        <div class="numeric-rating">
-            <div class="rating-slider">
-                <input type="range" 
-                       min="0" 
-                       max="10" 
-                       step="1"
-                       @bind="numericValue" 
-                       @bind:event="oninput"
-                       @onchange="OnNumericValueChanged"
-                       class="form-range" />
-                <div class="rating-value">
-                    <span class="rating-number">@numericValue</span>
-                    <span class="rating-description">@GetRatingDescription(numericValue)</span>
-                </div>
-            </div>
+        <MudStack Spacing="2">
+            <MudSlider T="int" 
+                       @bind-Value="numericValue" 
+                       Min="0" 
+                       Max="10" 
+                       Step="1"
+                       TickMarks="true"
+                       Color="Color.Primary" />
             
-            <div class="rating-scale">
+            <MudStack Row Justify="Justify.Center" Spacing="2">
+                <MudText Typo="Typo.h6" Color="Color.Primary">@numericValue</MudText>
+                <MudText Typo="Typo.body2" Color="Color.Secondary">@GetRatingDescription(numericValue)</MudText>
+            </MudStack>
+            
+            <MudGrid>
                 @for (int i = 0; i <= 10; i++)
                 {
-                    <div class="scale-point @(i == numericValue ? "active" : "")" 
-                         @onclick="() => SetNumericValue(i)">
-                        <div class="scale-number">@i</div>
-                        <div class="scale-label">@GetRatingDescription(i)</div>
-                    </div>
+                    var index = i; // Capture for lambda
+                    <MudItem xs="2" sm="1">
+                        <MudButton Variant="@(i == numericValue ? Variant.Filled : Variant.Outlined)" 
+                                   Color="@(i == numericValue ? Color.Primary : Color.Default)"
+                                   Size="Size.Small"
+                                   FullWidth="true"
+                                   OnClick="() => SetNumericValue(index)">
+                            @i
+                        </MudButton>
+                        <MudText Typo="Typo.caption" Align="Align.Center" Class="mt-1">
+                            @GetRatingDescription(i)
+                        </MudText>
+                    </MudItem>
                 }
-            </div>
-        </div>
+            </MudGrid>
+        </MudStack>
     }
     else
     {
-        <div class="pass-fail-rating">
-            <div class="btn-group btn-group-lg w-100" role="group">
-                <button type="button" 
-                        class="btn @(passFailValue == true ? "btn-success" : "btn-outline-success")"
-                        @onclick="() => SetPassFail(true)">
-                    <i class="fas fa-check-circle"></i> Pass
-                </button>
-                <button type="button" 
-                        class="btn @(passFailValue == false ? "btn-danger" : "btn-outline-danger")"
-                        @onclick="() => SetPassFail(false)">
-                    <i class="fas fa-times-circle"></i> Fail
-                </button>
-            </div>
-        </div>
+        <MudStack Spacing="2">
+            <MudText Typo="Typo.subtitle1">Pass/Fail Evaluation</MudText>
+            <MudButtonGroup Color="Color.Primary" Variant="Variant.Outlined">
+                <MudButton Variant="@(passFailValue == true ? Variant.Filled : Variant.Outlined)"
+                           Color="@(passFailValue == true ? Color.Success : Color.Default)"
+                           StartIcon="Icons.Material.Filled.CheckCircle"
+                           OnClick="() => SetPassFail(true)">
+                    Pass
+                </MudButton>
+                <MudButton Variant="@(passFailValue == false ? Variant.Filled : Variant.Outlined)"
+                           Color="@(passFailValue == false ? Color.Error : Color.Default)"
+                           StartIcon="Icons.Material.Filled.Cancel"
+                           OnClick="() => SetPassFail(false)">
+                    Fail
+                </MudButton>
+            </MudButtonGroup>
+        </MudStack>
     }
     
     @if (Rating != null)
     {
-        <div class="current-rating">
-            <div class="alert @(Rating.Passed ? "alert-success" : "alert-warning")">
-                <strong>Current Rating:</strong> @Rating.Description 
-                <span class="rating-badge">@Rating.NumericValue/10</span>
-            </div>
-        </div>
+        <MudAlert Severity="@(Rating.Passed ? Severity.Success : Severity.Warning)" ShowCloseIcon="false">
+            <ChildContent>
+                <MudStack Row Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
+                    <MudText><strong>Current Rating:</strong> @Rating.Description</MudText>
+                    <MudChip T="string" Color="Color.Primary" Size="Size.Small">@Rating.NumericValue/10</MudChip>
+                </MudStack>
+            </ChildContent>
+        </MudAlert>
     }
-</div>
+</MudStack>
 
 <style>
     .discipline-rating-component {

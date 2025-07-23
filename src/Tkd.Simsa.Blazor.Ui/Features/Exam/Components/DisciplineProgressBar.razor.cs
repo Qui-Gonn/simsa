@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using MudBlazor;
 using Tkd.Simsa.Application.EventManagement;
 
 namespace Tkd.Simsa.Blazor.Ui.Features.Exam.Components;
@@ -52,5 +53,37 @@ public partial class DisciplineProgressBar : ComponentBase
             return "current";
             
         return string.Empty;
+    }
+    
+    /// <summary>
+    /// Gets the MudBlazor color for a discipline step.
+    /// </summary>
+    /// <param name="discipline">The discipline to get the color for</param>
+    /// <returns>MudBlazor color</returns>
+    private Color GetStepColor(DisciplineDto discipline)
+    {
+        if (CompletedDisciplines.Any(cd => cd.Name == discipline.Name))
+            return Color.Success;
+            
+        if (CurrentDiscipline?.Name == discipline.Name)
+            return Color.Primary;
+            
+        return Color.Default;
+    }
+    
+    /// <summary>
+    /// Gets the icon for a discipline step.
+    /// </summary>
+    /// <param name="discipline">The discipline to get the icon for</param>
+    /// <returns>Icon string</returns>
+    private string GetStepIcon(DisciplineDto discipline)
+    {
+        if (CompletedDisciplines.Any(cd => cd.Name == discipline.Name))
+            return Icons.Material.Filled.CheckCircle;
+            
+        if (CurrentDiscipline?.Name == discipline.Name)
+            return Icons.Material.Filled.PlayArrow;
+            
+        return Icons.Material.Filled.RadioButtonUnchecked;
     }
 }
