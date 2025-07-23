@@ -1,7 +1,7 @@
 namespace Tkd.Simsa.Domain.EventManagement;
 
 /// <summary>
-/// Enumeration for Taekwondo examination discipline categories.
+/// Enumeration for Taekwon-Do examination discipline categories.
 /// </summary>
 public enum DisciplineType
 {
