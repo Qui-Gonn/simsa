@@ -34,19 +34,9 @@ internal class DisciplineEntity : IHasId<Guid>
     public int Order { get; set; }
     
     /// <summary>
-    /// Gets or sets the examination event identifier.
-    /// </summary>
-    public Guid EventId { get; set; }
-    
-    /// <summary>
     /// Gets or sets the examination identifier.
     /// </summary>
     public Guid ExaminationId { get; set; }
-    
-    /// <summary>
-    /// Navigation property to the examination event.
-    /// </summary>
-    public EventEntity Event { get; set; } = null!;
     
     /// <summary>
     /// Navigation property to the examination.

@@ -33,12 +33,7 @@ internal class ExaminationResultEntity : IHasId<Guid>
     public DateTime LastUpdated { get; set; } = DateTime.UtcNow;
     
     /// <summary>
-    /// Navigation property to the examination event.
-    /// </summary>
-    public EventEntity Examination { get; set; } = null!;
-    
-    /// <summary>
     /// Navigation property to the examination.
     /// </summary>
-    public ExaminationEntity ExaminationEntity { get; set; } = null!;
+    public ExaminationEntity Examination { get; set; } = null!;
 }

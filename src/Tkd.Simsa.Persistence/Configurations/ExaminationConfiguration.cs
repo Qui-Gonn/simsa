@@ -40,7 +40,7 @@ internal class ExaminationConfiguration : IEntityTypeConfiguration<ExaminationEn
             .OnDelete(DeleteBehavior.Cascade);
             
         builder.HasMany(e => e.ExaminationResults)
-            .WithOne(er => er.ExaminationEntity)
+            .WithOne(er => er.Examination)
             .HasForeignKey(er => er.ExaminationId)
             .OnDelete(DeleteBehavior.Cascade);
     }

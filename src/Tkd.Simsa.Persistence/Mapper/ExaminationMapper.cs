@@ -18,7 +18,8 @@ internal class ExaminationMapper : IMapper<ExaminationEntity, Examination>
 
     public Examination ToModel(ExaminationEntity entity)
     {
-        var participationData = JsonSerializer.Deserialize<ParticipationData>(entity.ParticipationData) ?? ParticipationData.NoParticipationData;
+        var participationData = BaseEventMapper.DeserializeParticipationData(entity.ParticipationData);
+        var (id, name, description, startDate, _) = BaseEventMapper.MapCommonPropertiesFromEntity(entity, participationData);
         
         // Map disciplines
         var disciplines = entity.Disciplines
@@ -41,11 +42,11 @@ internal class ExaminationMapper : IMapper<ExaminationEntity, Examination>
         
         return new Examination
         {
-            Id = entity.Id,
-            Description = entity.Description,
-            Name = entity.Name,
+            Id = id,
+            Name = name,
+            Description = description,
+            StartDate = startDate,
             ParticipationData = participationData,
-            StartDate = entity.StartDate,
             Disciplines = disciplines,
             Progress = examinationProgress
         };
@@ -53,10 +54,8 @@ internal class ExaminationMapper : IMapper<ExaminationEntity, Examination>
 
     public ExaminationEntity UpdateEntity(ExaminationEntity entity, Examination model)
     {
-        entity.Description = model.Description;
-        entity.Name = model.Name;
-        entity.ParticipationData = JsonSerializer.Serialize(model.ParticipationData);
-        entity.StartDate = model.StartDate;
+        var participationDataJson = BaseEventMapper.SerializeParticipationData(model.ParticipationData);
+        BaseEventMapper.MapCommonPropertiesToEntity(model, participationDataJson, entity);
         
         // Update examination progress if present
         if (model.Progress != null)

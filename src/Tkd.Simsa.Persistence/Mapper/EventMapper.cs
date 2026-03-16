@@ -1,8 +1,6 @@
 ﻿namespace Tkd.Simsa.Persistence.Mapper;
 
 using System.Linq.Expressions;
-using System.Text.Json;
-
 using Tkd.Simsa.Application.Common.Filtering;
 using Tkd.Simsa.Domain.EventManagement;
 using Tkd.Simsa.Persistence.Entities;
@@ -16,24 +14,23 @@ internal class EventMapper : IMapper<EventEntity, Event>
 
     public Event ToModel(EventEntity entity)
     {
-        var participationData = JsonSerializer.Deserialize<ParticipationData>(entity.ParticipationData) ?? ParticipationData.NoParticipationData;
+        var participationData = BaseEventMapper.DeserializeParticipationData(entity.ParticipationData);
+        var (id, name, description, startDate, _) = BaseEventMapper.MapCommonPropertiesFromEntity(entity, participationData);
         
         return new Event
         {
-            Id = entity.Id,
-            Description = entity.Description,
-            Name = entity.Name,
-            ParticipationData = participationData,
-            StartDate = entity.StartDate
+            Id = id,
+            Name = name,
+            Description = description,
+            StartDate = startDate,
+            ParticipationData = participationData
         };
     }
 
     public EventEntity UpdateEntity(EventEntity entity, Event model)
     {
-        entity.Description = model.Description;
-        entity.Name = model.Name;
-        entity.ParticipationData = JsonSerializer.Serialize(model.ParticipationData);
-        entity.StartDate = model.StartDate;
+        var participationDataJson = BaseEventMapper.SerializeParticipationData(model.ParticipationData);
+        BaseEventMapper.MapCommonPropertiesToEntity(model, participationDataJson, entity);
         
         return entity;
     }

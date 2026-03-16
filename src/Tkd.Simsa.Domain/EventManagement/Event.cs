@@ -1,10 +1,12 @@
 ﻿namespace Tkd.Simsa.Domain.EventManagement;
 
-using Tkd.Simsa.Domain.Common;
-
-public record Event : IModelWithId<Guid>
+/// <summary>
+/// Represents a general event in the system.
+/// For specialized event types, inherit from BaseEvent or use specific event classes like Examination.
+/// </summary>
+public record Event : BaseEvent
 {
-    public static readonly Event Empty = new ()
+    public static readonly Event Empty = new()
     {
         Id = Guid.Empty,
         Description = string.Empty,
@@ -13,13 +15,28 @@ public record Event : IModelWithId<Guid>
         StartDate = DateOnly.MinValue
     };
 
-    public string Description { get; init; } = string.Empty;
+    /// <summary>
+    /// Factory method for creating general events.
+    /// </summary>
+    /// <param name="name">The event name</param>
+    /// <param name="description">The event description</param>
+    /// <param name="startDate">The event start date</param>
+    /// <param name="participationData">The participation data</param>
+    /// <returns>A new event</returns>
+    public static Event Create(
+        string name,
+        string description,
+        DateOnly startDate,
+        ParticipationData participationData)
+    {
+        ValidateCommonProperties(name, description, participationData);
 
-    public Guid Id { get; init; } = Guid.CreateVersion7();
-
-    public string Name { get; init; } = string.Empty;
-
-    public ParticipationData ParticipationData { get; init; } = ParticipationData.NoParticipationData;
-
-    public DateOnly StartDate { get; init; } = DateOnly.FromDateTime(DateTime.UtcNow);
+        return new Event
+        {
+            Name = name.Trim(),
+            Description = description.Trim(),
+            StartDate = startDate,
+            ParticipationData = participationData
+        };
+    }
 }

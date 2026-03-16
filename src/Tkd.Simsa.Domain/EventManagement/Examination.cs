@@ -1,11 +1,10 @@
 namespace Tkd.Simsa.Domain.EventManagement;
 
-using Tkd.Simsa.Domain.Common;
-
 /// <summary>
 /// Aggregate root representing an examination event with specific examination behavior.
+/// Inherits from BaseEvent to share common event properties and behavior.
 /// </summary>
-public record Examination : IModelWithId<Guid>
+public record Examination : BaseEvent
 {
     public static readonly Examination Empty = new()
     {
@@ -17,31 +16,6 @@ public record Examination : IModelWithId<Guid>
         Disciplines = [],
         Progress = null
     };
-
-    /// <summary>
-    /// Gets the unique identifier for this examination.
-    /// </summary>
-    public Guid Id { get; init; } = Guid.CreateVersion7();
-
-    /// <summary>
-    /// Gets the examination name.
-    /// </summary>
-    public string Name { get; init; } = string.Empty;
-
-    /// <summary>
-    /// Gets the examination description.
-    /// </summary>
-    public string Description { get; init; } = string.Empty;
-
-    /// <summary>
-    /// Gets the examination start date.
-    /// </summary>
-    public DateOnly StartDate { get; init; } = DateOnly.FromDateTime(DateTime.UtcNow);
-
-    /// <summary>
-    /// Gets the participation data for this examination.
-    /// </summary>
-    public ParticipationData ParticipationData { get; init; } = ParticipationData.NoParticipationData;
 
     /// <summary>
     /// Gets the examination disciplines.
@@ -69,10 +43,8 @@ public record Examination : IModelWithId<Guid>
         IReadOnlyList<Discipline> disciplines,
         ParticipationData participationData)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(name);
-        ArgumentException.ThrowIfNullOrWhiteSpace(description);
+        ValidateCommonProperties(name, description, participationData);
         ArgumentNullException.ThrowIfNull(disciplines);
-        ArgumentNullException.ThrowIfNull(participationData);
 
         if (disciplines.Count == 0)
             throw new ArgumentException("Examination must have at least one discipline", nameof(disciplines));
