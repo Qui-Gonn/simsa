@@ -8,6 +8,8 @@ using Tkd.Simsa.Domain.PersonManagement;
 internal class FakerCollection
 {
     public readonly Faker<Domain.EventManagement.Event> EventFaker;
+    
+    public readonly Faker<Domain.EventManagement.Examination> ExaminationFaker;
 
     public readonly Dictionary<IFakerTInternal, object> GeneratedItems = new ();
 
@@ -17,6 +19,7 @@ internal class FakerCollection
     {
         this.PersonFaker = this.DefinePersonFaker();
         this.EventFaker = this.DefineEventFaker();
+        this.ExaminationFaker = this.DefineExaminationFaker();
     }
 
     public List<T> GetItems<T>(Faker<T> faker)
@@ -31,7 +34,39 @@ internal class FakerCollection
                     .StrictMode(true)
                     .RuleFor(i => i.Id, Guid.NewGuid)
                     .RuleFor(i => i.Description, f => f.Lorem.Text())
-                    .RuleFor(i => i.Name, f => $"Exam {f.Random.Number(100)}")
+                    .RuleFor(i => i.Name, f => $"Event {f.Random.Number(100)}")
+                    .RuleFor(
+                        i => i.ParticipationData,
+                        f =>
+                        {
+                            var randomPersons = f.PickRandom(this.GetItems(this.PersonFaker), f.Random.Number(3, 8));
+                            var participants = randomPersons.Select(p => new Participant
+                                                            {
+                                                                Id = Guid.CreateVersion7(),
+                                                                PersonId = p.Id,
+                                                                PersonInfo = p
+                                                            })
+                                                            .ToList();
+                            return new ParticipationData(participants);
+                        })
+                    .RuleFor(
+                        i => i.StartDate,
+                        f => f.Date.BetweenDateOnly(
+                            DateOnly.FromDateTime(DateTime.UtcNow - TimeSpan.FromDays(365)),
+                            DateOnly.FromDateTime(DateTime.UtcNow + TimeSpan.FromDays(30))));
+
+        var generatedItems = faker.Generate(25);
+        this.GeneratedItems[faker] = generatedItems;
+        return faker;
+    }
+
+    private Faker<Examination> DefineExaminationFaker()
+    {
+        var faker = new Faker<Domain.EventManagement.Examination>()
+                    .StrictMode(true)
+                    .RuleFor(i => i.Id, Guid.NewGuid)
+                    .RuleFor(i => i.Description, f => f.Lorem.Text())
+                    .RuleFor(i => i.Name, f => $"Examination {f.Random.Number(100)}")
                     .RuleFor(
                         i => i.ParticipationData,
                         f =>
@@ -51,12 +86,12 @@ internal class FakerCollection
                         f => f.Date.BetweenDateOnly(
                             DateOnly.FromDateTime(DateTime.UtcNow - TimeSpan.FromDays(365)),
                             DateOnly.FromDateTime(DateTime.UtcNow + TimeSpan.FromDays(30))))
-                    .RuleFor(i => i.ExaminationDisciplines, f => Enumerable.Range(1, 3).Select(_ => Discipline.Create(
+                    .RuleFor(i => i.Disciplines, f => Enumerable.Range(1, 3).Select(_ => Discipline.Create(
                         f.PickRandom<DisciplineType>(),
                         f.Lorem.Word(),
                         f.Lorem.Sentence(),
                         f.Random.Int(1, 10))).ToList())
-                    .RuleFor(i => i.ExaminationProgress, f => ExaminationProgress.CreateInitial(
+                    .RuleFor(i => i.Progress, f => ExaminationProgress.CreateInitial(
                         Enumerable.Range(1, 3).Select(_ => Discipline.Create(
                             f.PickRandom<DisciplineType>(),
                             f.Lorem.Word(),

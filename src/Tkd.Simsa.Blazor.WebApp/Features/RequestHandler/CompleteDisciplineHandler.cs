@@ -8,38 +8,38 @@ namespace Tkd.Simsa.Blazor.WebApp.Features.RequestHandler;
 /// </summary>
 internal class CompleteDisciplineHandler : IRequestHandler<CompleteDisciplineCommand, ExaminationProgressDto?>
 {
-    private readonly IEventRepository _eventRepository;
+    private readonly IExaminationRepository _examinationRepository;
     
-    public CompleteDisciplineHandler(IEventRepository eventRepository)
+    public CompleteDisciplineHandler(IExaminationRepository examinationRepository)
     {
-        _eventRepository = eventRepository;
+        _examinationRepository = examinationRepository;
     }
     
     public async Task<ExaminationProgressDto?> Handle(CompleteDisciplineCommand request, CancellationToken cancellationToken)
     {
         // Get current examination
-        var examination = await _eventRepository.GetExaminationByIdAsync(request.ExaminationId, cancellationToken);
-        if (examination?.ExaminationProgress == null)
+        var examination = await _examinationRepository.GetByIdAsync(request.ExaminationId, cancellationToken);
+        if (examination?.Progress == null)
             return null;
             
         // Validate discipline is part of examination
-        if (!examination.ExaminationDisciplines.Contains(request.Discipline))
+        if (!examination.Disciplines.Contains(request.Discipline))
             throw new ArgumentException($"Discipline '{request.Discipline.Name}' is not part of examination '{examination.Name}'");
         
         // Complete the discipline and update progress
-        var updatedProgress = examination.ExaminationProgress.CompleteDiscipline(request.Discipline);
-        var updatedExamination = await _eventRepository.UpdateExaminationProgressAsync(
+        var updatedProgress = examination.Progress.CompleteDiscipline(request.Discipline);
+        var updatedExamination = await _examinationRepository.UpdateProgressAsync(
             request.ExaminationId, 
             updatedProgress, 
             cancellationToken);
             
-        if (updatedExamination?.ExaminationProgress == null)
+        if (updatedExamination?.Progress == null)
             return null;
             
-        var disciplineDtos = examination.ExaminationDisciplines
+        var disciplineDtos = examination.Disciplines
             .Select(d => new DisciplineDto(d.Type, d.Name, d.Description, d.Order))
             .ToList();
             
-        return updatedExamination.ExaminationProgress.ToProgressDto(disciplineDtos);
+        return updatedExamination.Progress.ToProgressDto(disciplineDtos);
     }
 }

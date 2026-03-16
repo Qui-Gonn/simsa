@@ -9,20 +9,20 @@ namespace Tkd.Simsa.Blazor.WebApp.Features.RequestHandler;
 internal class CompleteParticipantExaminationHandler : IRequestHandler<CompleteParticipantExaminationCommand, ExaminationResultDto?>
 {
     private readonly IExaminationResultRepository _resultRepository;
-    private readonly IEventRepository _eventRepository;
+    private readonly IExaminationRepository _examinationRepository;
     
     public CompleteParticipantExaminationHandler(
         IExaminationResultRepository resultRepository,
-        IEventRepository eventRepository)
+        IExaminationRepository examinationRepository)
     {
         _resultRepository = resultRepository;
-        _eventRepository = eventRepository;
+        _examinationRepository = examinationRepository;
     }
     
     public async Task<ExaminationResultDto?> Handle(CompleteParticipantExaminationCommand request, CancellationToken cancellationToken)
     {
         // Get examination and current result
-        var examination = await _eventRepository.GetExaminationByIdAsync(request.ExaminationId, cancellationToken);
+        var examination = await _examinationRepository.GetByIdAsync(request.ExaminationId, cancellationToken);
         if (examination == null)
             return null;
             
@@ -31,7 +31,7 @@ internal class CompleteParticipantExaminationHandler : IRequestHandler<CompleteP
             return null;
             
         // Verify all disciplines have been completed
-        if (!result.IsComplete(examination.ExaminationDisciplines))
+        if (!result.IsComplete(examination.Disciplines))
         {
             throw new InvalidOperationException("Cannot complete examination - not all disciplines have been evaluated");
         }

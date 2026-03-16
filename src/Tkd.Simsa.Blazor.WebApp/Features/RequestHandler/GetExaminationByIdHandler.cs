@@ -9,32 +9,32 @@ namespace Tkd.Simsa.Blazor.WebApp.Features.RequestHandler;
 /// </summary>
 internal class GetExaminationByIdHandler : IRequestHandler<GetExaminationByIdQuery, ExaminationDto?>
 {
-    private readonly IEventRepository _eventRepository;
+    private readonly IExaminationRepository _examinationRepository;
     
-    public GetExaminationByIdHandler(IEventRepository eventRepository)
+    public GetExaminationByIdHandler(IExaminationRepository examinationRepository)
     {
-        _eventRepository = eventRepository;
+        _examinationRepository = examinationRepository;
     }
     
     public async Task<ExaminationDto?> Handle(GetExaminationByIdQuery request, CancellationToken cancellationToken)
     {
-        var examination = await _eventRepository.GetExaminationByIdAsync(request.ExaminationId, cancellationToken);
+        var examination = await _examinationRepository.GetByIdAsync(request.ExaminationId, cancellationToken);
         return examination?.ToExaminationDto();
     }
 }
 
 /// <summary>
-/// Extension methods for mapping Event to ExaminationDto.
+/// Extension methods for mapping Examination to ExaminationDto.
 /// </summary>
 internal static class ExaminationMappingExtensions
 {
-    public static ExaminationDto ToExaminationDto(this Event examination)
+    public static ExaminationDto ToExaminationDto(this Examination examination)
     {
-        var disciplineDtos = examination.ExaminationDisciplines
+        var disciplineDtos = examination.Disciplines
             .Select(d => new DisciplineDto(d.Type, d.Name, d.Description, d.Order))
             .ToList();
             
-        var progressDto = examination.ExaminationProgress?.ToProgressDto(disciplineDtos) 
+        var progressDto = examination.Progress?.ToProgressDto(disciplineDtos) 
                          ?? new ExaminationProgressDto(null, [], 0, 0);
                          
         var participantDtos = examination.ParticipationData.Participants

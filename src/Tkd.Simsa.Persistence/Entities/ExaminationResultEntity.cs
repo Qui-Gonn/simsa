@@ -36,4 +36,9 @@ internal class ExaminationResultEntity : IHasId<Guid>
     /// Navigation property to the examination event.
     /// </summary>
     public EventEntity Examination { get; set; } = null!;
+    
+    /// <summary>
+    /// Navigation property to the examination.
+    /// </summary>
+    public ExaminationEntity ExaminationEntity { get; set; } = null!;
 }

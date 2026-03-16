@@ -23,6 +23,7 @@ public static class ServiceCollectionExtensions
         services.Register<EventEntity, Event, EventMapper, IEventRepository, EventRepository>();
         services.Register<PersonEntity, Person, PersonMapper, IPersonRepository, PersonRepository>();
         services.Register<ExaminationResultEntity, ExaminationResult, ExaminationResultMapper, IExaminationResultRepository, ExaminationResultRepository>();
+        services.Register<ExaminationEntity, Examination, ExaminationMapper, IExaminationRepository, ExaminationRepository>();
 
         return services;
     }

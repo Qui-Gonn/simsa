@@ -1,5 +1,6 @@
 using MediatR;
 using Tkd.Simsa.Application.EventManagement;
+using Tkd.Simsa.Domain.EventManagement;
 
 namespace Tkd.Simsa.Blazor.WebApp.Features.RequestHandler;
 
@@ -8,16 +9,16 @@ namespace Tkd.Simsa.Blazor.WebApp.Features.RequestHandler;
 /// </summary>
 internal class GetExaminationProgressHandler : IRequestHandler<GetExaminationProgressQuery, ExaminationProgressDto?>
 {
-    private readonly IEventRepository _eventRepository;
+    private readonly IExaminationRepository _examinationRepository;
     
-    public GetExaminationProgressHandler(IEventRepository eventRepository)
+    public GetExaminationProgressHandler(IExaminationRepository examinationRepository)
     {
-        _eventRepository = eventRepository;
+        _examinationRepository = examinationRepository;
     }
     
     public async Task<ExaminationProgressDto?> Handle(GetExaminationProgressQuery request, CancellationToken cancellationToken)
     {
-        var progress = await _eventRepository.GetExaminationProgressAsync(request.ExaminationId, cancellationToken);
+        var progress = await _examinationRepository.GetProgressAsync(request.ExaminationId, cancellationToken);
         
         if (progress == null)
             return null;

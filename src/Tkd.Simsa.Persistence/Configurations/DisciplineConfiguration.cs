@@ -34,10 +34,19 @@ internal class DisciplineConfiguration : IEntityTypeConfiguration<DisciplineEnti
         builder.Property(d => d.EventId)
             .IsRequired();
             
+        builder.Property(d => d.ExaminationId)
+            .IsRequired();
+            
         // Configure relationship with Event
         builder.HasOne(d => d.Event)
             .WithMany(e => e.Disciplines)
             .HasForeignKey(d => d.EventId)
+            .OnDelete(DeleteBehavior.Cascade);
+            
+        // Configure relationship with Examination
+        builder.HasOne(d => d.Examination)
+            .WithMany(e => e.Disciplines)
+            .HasForeignKey(d => d.ExaminationId)
             .OnDelete(DeleteBehavior.Cascade);
             
         // Create index for efficient querying

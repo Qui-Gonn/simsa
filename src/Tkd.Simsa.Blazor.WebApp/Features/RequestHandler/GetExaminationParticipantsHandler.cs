@@ -8,16 +8,16 @@ namespace Tkd.Simsa.Blazor.WebApp.Features.RequestHandler;
 /// </summary>
 internal class GetExaminationParticipantsHandler : IRequestHandler<GetExaminationParticipantsQuery, IEnumerable<ParticipantDto>>
 {
-    private readonly IEventRepository _eventRepository;
+    private readonly IExaminationRepository _examinationRepository;
     
-    public GetExaminationParticipantsHandler(IEventRepository eventRepository)
+    public GetExaminationParticipantsHandler(IExaminationRepository examinationRepository)
     {
-        _eventRepository = eventRepository;
+        _examinationRepository = examinationRepository;
     }
     
     public async Task<IEnumerable<ParticipantDto>> Handle(GetExaminationParticipantsQuery request, CancellationToken cancellationToken)
     {
-        var participants = await _eventRepository.GetExaminationParticipantsAsync(request.ExaminationId, cancellationToken);
+        var participants = await _examinationRepository.GetParticipantsAsync(request.ExaminationId, cancellationToken);
         
         return participants.Select(p => new ParticipantDto(
             p.Id,

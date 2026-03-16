@@ -15,17 +15,12 @@ internal class EventEntity : IHasId<Guid>
     public DateOnly StartDate { get; set; }
     
     /// <summary>
-    /// Gets or sets the JSON serialized examination progress.
-    /// </summary>
-    public string? ExaminationProgressJson { get; set; }
-    
-    /// <summary>
-    /// Navigation property to examination disciplines.
+    /// Navigation property to examination disciplines (for backwards compatibility).
     /// </summary>
     public ICollection<DisciplineEntity> Disciplines { get; set; } = new List<DisciplineEntity>();
     
     /// <summary>
-    /// Navigation property to examination results.
+    /// Navigation property to examination results (for backwards compatibility).
     /// </summary>
     public ICollection<ExaminationResultEntity> ExaminationResults { get; set; } = new List<ExaminationResultEntity>();
 }
